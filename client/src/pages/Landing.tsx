@@ -57,7 +57,7 @@ export default function Landing() {
         <div className="w-full max-w-5xl space-y-16">
           <div className="text-center space-y-6">
             <h2 className="font-display text-6xl font-bold text-foreground">
-              Explore
+              Discover. Compare. Connect.
             </h2>
             <p className="text-xl text-muted-foreground">
               Choose your path to discover construction innovations
