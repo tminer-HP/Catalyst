@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
 import { ArrowLeft, Search, Building, MapPin, DollarSign } from "lucide-react";
+import { useSearchHistory } from "@/hooks/useSearchHistory";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -11,6 +12,20 @@ export default function ProjectExplorer() {
   const [, setLocation] = useLocation();
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedProject, setSelectedProject] = useState<string | null>(null);
+  const { addToHistory } = useSearchHistory();
+
+  useEffect(() => {
+    if (selectedProject) {
+      const project = mockProjects.find(p => p.id === selectedProject);
+      if (project) {
+        addToHistory({
+          type: 'project',
+          title: project.name,
+          path: `/project-explorer?p=${selectedProject}`,
+        });
+      }
+    }
+  }, [selectedProject]);
 
   const filteredProjects = mockProjects.filter(project =>
     project.name.toLowerCase().includes(searchQuery.toLowerCase()) ||

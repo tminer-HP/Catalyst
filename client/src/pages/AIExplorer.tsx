@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useLocation, useSearch } from "wouter";
 import { ArrowLeft, Sparkles } from "lucide-react";
+import { useSearchHistory } from "@/hooks/useSearchHistory";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -18,10 +19,16 @@ export default function AIExplorer() {
   const [results, setResults] = useState(
     initialQuery ? aiSearchSolutions(initialQuery, mockSolutions) : []
   );
+  const { addToHistory } = useSearchHistory();
 
   useEffect(() => {
     if (initialQuery) {
       setResults(aiSearchSolutions(initialQuery, mockSolutions));
+      addToHistory({
+        type: 'ai',
+        title: initialQuery,
+        path: `/ai-explore?q=${encodeURIComponent(initialQuery)}`,
+      });
     }
   }, [initialQuery]);
 

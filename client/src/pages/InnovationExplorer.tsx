@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
 import { ArrowLeft, Cpu, Shield, Calculator, Wrench, Eye } from "lucide-react";
+import { useSearchHistory } from "@/hooks/useSearchHistory";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -19,6 +20,17 @@ const categoryIcons: Record<string, any> = {
 export default function InnovationExplorer() {
   const [, setLocation] = useLocation();
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const { addToHistory } = useSearchHistory();
+
+  useEffect(() => {
+    if (selectedCategory) {
+      addToHistory({
+        type: 'innovation',
+        title: `${selectedCategory} Innovations`,
+        path: `/innovation-explorer?c=${selectedCategory}`,
+      });
+    }
+  }, [selectedCategory]);
 
   const categoryStats = CATEGORIES.map(category => {
     const count = mockSolutions.filter(s => s.categories.includes(category)).length;

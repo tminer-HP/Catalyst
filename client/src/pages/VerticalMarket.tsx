@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
 import { ArrowLeft, Building2, Factory, Plane, Heart, ShoppingBag } from "lucide-react";
+import { useSearchHistory } from "@/hooks/useSearchHistory";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -18,6 +19,17 @@ const verticalIcons: Record<string, any> = {
 export default function VerticalMarket() {
   const [, setLocation] = useLocation();
   const [selectedVertical, setSelectedVertical] = useState<string | null>(null);
+  const { addToHistory } = useSearchHistory();
+
+  useEffect(() => {
+    if (selectedVertical) {
+      addToHistory({
+        type: 'vertical',
+        title: `${selectedVertical} Solutions`,
+        path: `/vertical-market?v=${selectedVertical}`,
+      });
+    }
+  }, [selectedVertical]);
 
   const verticalStats = VERTICALS.map(vertical => {
     const solutionCount = mockSolutions.filter(s => 
