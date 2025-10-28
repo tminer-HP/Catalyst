@@ -108,6 +108,8 @@ export const mockSolutions: Solution[] = [
       "Educational institutions",
     ],
     relatedIds: ["dusty-robotics", "spot-ai"],
+    primaryDivision: "09",
+    baseScore: 95,
   },
   {
     id: "dusty-robotics",
@@ -135,6 +137,9 @@ export const mockSolutions: Solution[] = [
       "Quality control inspections",
     ],
     relatedIds: ["siteprint", "rugged-robotics", "cyphra"],
+    primaryDivision: "01",
+    secondaryDivisions: ["22", "23", "26"],
+    baseScore: 98,
   },
   {
     id: "spot-ai",
@@ -162,6 +167,9 @@ export const mockSolutions: Solution[] = [
       "Quality assurance inspections",
     ],
     relatedIds: ["cyphra", "canvas-robotics"],
+    primaryDivision: "28",
+    secondaryDivisions: ["01"],
+    baseScore: 92,
   },
   {
     id: "cyphra",
@@ -189,6 +197,8 @@ export const mockSolutions: Solution[] = [
       "Subcontractor performance tracking",
     ],
     relatedIds: ["spot-ai", "dusty-robotics"],
+    primaryDivision: "01",
+    baseScore: 85,
   },
   {
     id: "siteprint",
@@ -216,6 +226,9 @@ export const mockSolutions: Solution[] = [
       "Quality control and verification",
     ],
     relatedIds: ["dusty-robotics", "rugged-robotics"],
+    primaryDivision: "01",
+    secondaryDivisions: ["22", "23", "26"],
+    baseScore: 88,
   },
   {
     id: "rugged-robotics",
@@ -243,6 +256,9 @@ export const mockSolutions: Solution[] = [
       "Large-scale commercial projects",
     ],
     relatedIds: ["dusty-robotics", "siteprint"],
+    primaryDivision: "01",
+    secondaryDivisions: ["22", "23", "26"],
+    baseScore: 90,
   },
   {
     id: "procore",
@@ -270,6 +286,8 @@ export const mockSolutions: Solution[] = [
       "Owner and GC collaboration",
     ],
     relatedIds: ["cyphra"],
+    primaryDivision: "01",
+    baseScore: 100,
   },
   {
     id: "buildertrend",
@@ -297,6 +315,8 @@ export const mockSolutions: Solution[] = [
       "Small commercial projects",
     ],
     relatedIds: ["procore"],
+    primaryDivision: "01",
+    baseScore: 87,
   },
   {
     id: "plangrid",
@@ -324,6 +344,8 @@ export const mockSolutions: Solution[] = [
       "Infrastructure project management",
     ],
     relatedIds: ["procore"],
+    primaryDivision: "01",
+    baseScore: 89,
   },
   {
     id: "esticom",
@@ -351,5 +373,8 @@ export const mockSolutions: Solution[] = [
       "Commercial project takeoffs",
     ],
     relatedIds: ["procore"],
+    primaryDivision: "26",
+    secondaryDivisions: ["01", "22", "23"],
+    baseScore: 83,
   },
 ];
