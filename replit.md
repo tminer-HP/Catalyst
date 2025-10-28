@@ -2,75 +2,7 @@
 
 ## Overview
 
-Catalyst is a construction technology discovery platform that serves as a comprehensive directory and search engine for AEC (Architecture, Engineering, Construction) innovation solutions. The platform enables users to discover, compare, and connect with construction technology providers across multiple categories including robotics, AI, safety, sustainability, and productivity tools.
-
-The application provides multiple discovery pathways: browsing by vertical markets (datacenters, hospitals, airports), exploring specific projects, searching by innovation categories, and AI-powered natural language search. It's designed as a sophisticated B2B SaaS platform with enterprise aesthetics inspired by ProductHunt, Linear, and Clutch.
-
-## Recent Changes
-
-### October 28, 2025
-
-- **Company Media Sections**: Added comprehensive media support to company profiles
-  - **Gallery Section**: Image galleries with captions for product photos and project imagery
-  - **Videos Section**: Embedded YouTube videos showcasing product demos and customer stories
-  - **Case Studies Section**: Detailed project case studies with project type, description, and measurable results
-  - Media schema includes MediaImage, MediaVideo, and CaseStudy interfaces
-  - Conditional rendering - sections only display if media exists
-  - Updated Canvas Robotics, Dusty Robotics, and SPOT AI with sample media content
-  - Images sourced from Unsplash with construction-related photography
-  - YouTube embeds use construction technology demonstration videos
-  - Case studies feature project type badges and highlighted results sections
-
-- **Company Logo Integration**: Replaced placeholder first-letter logos with real company logos
-  - Integrated Clearbit Logo API for automatic company logo fetching
-  - Logo URL format: `https://logo.clearbit.com/{company-website}`
-  - Graceful fallback to styled first-letter if logo unavailable
-  - Applied to Solutions page cards, Solution Detail headers, and Related Solutions cards
-  - Consistent error handling with useState tracking across all logo instances
-
-- **Complete Branding Update**: Renamed application from "Diverge Connect" to "Catalyst"
-  - Updated all references across codebase (NavHeader, index.html, documentation)
-  - Changed logo icon from "D" to "C"
-  - Updated design guidelines and project documentation
-
-- **SolutionDetail Page Improvements**: Fixed navigation and logo display issues
-  - **Navigation Fix**: "Back" button now uses browser history (`window.history.back()`) instead of hardcoded `/dashboard` path
-  - Properly returns to previous page (Solutions, Project Explorer, etc.) instead of always going to Dashboard
-  - Fallback to `/solutions` if no browser history exists
-  - **Logo Display Fix**: Company logos now display correctly with robust error handling
-  - Logos load from `attached_assets/generated_images/` with proper path transformation
-  - Fallback to styled first-letter icon if logo fails to load
-  - Logo error state resets when navigating between solutions (no stuck fallback state)
-  - Added HelpMenu to SolutionDetail page header
-
-- **Checkout/Selection System**: Complete solution selection and checkout workflow
-  - Users can select multiple solutions from the Solutions page via checkboxes
-  - "View Selections" button appears in header showing selection count
-  - Dedicated Checkout page (`/checkout`) displaying selected solutions
-  - Solutions grouped by CSI divisions with collapsible sections
-  - Each solution shows: name, tagline, cost, rating, project usage, and full contact information
-  - Share feature generates shareable URLs with query parameters (e.g., `/checkout?solutions=id1,id2`)
-  - Print and Export (CSV) functionality for selected solutions
-  - Selection state persists in localStorage and survives page refreshes
-  - URL-based hydration allows shared links to restore selections in new sessions
-  - Robust error handling for corrupted localStorage data
-  - "Clear All" and individual deselection capabilities
-
-- **Extended Solution Data Model**: Added business-critical fields to all solutions
-  - `averageCost`: Pricing indicator ("$$", "$$$", "$$$$")
-  - `rating`: Solution rating (0-5 scale with decimals)
-  - `projectsUsed`: Number of projects using the solution
-  - `contactName`, `contactEmail`, `contactPhone`: Point of contact information
-  - All mock solutions updated with realistic contact and pricing data
-
-- **ChatGPT-style Search History Sidebar**: Added a persistent left sidebar with search history functionality
-  - Logo displayed at top of sidebar
-  - All discovery methods (Vertical Market, Project Explorer, Innovation Explorer, AI Search) now track user sessions
-  - History items stored in localStorage and persist across sessions
-  - Click any history item to return to previous searches/explorations
-  - "New Search" button returns to landing page
-  - Clear history option available
-  - Up to 20 most recent sessions saved
+Catalyst is a B2B SaaS platform designed as a comprehensive directory and search engine for AEC (Architecture, Engineering, Construction) innovation solutions. It enables users to discover, compare, and connect with construction technology providers across various categories like robotics, AI, safety, sustainability, and productivity tools. The platform offers multiple discovery pathways, including browsing by vertical markets, exploring projects, searching by innovation categories, and AI-powered natural language search. Its aesthetic is inspired by leading enterprise platforms.
 
 ## User Preferences
 
@@ -80,207 +12,78 @@ Preferred communication style: Simple, everyday language.
 
 ### Frontend Architecture
 
-**Technology Stack:**
-- React 18 with TypeScript for type-safe component development
-- Vite as the build tool and development server
-- Wouter for lightweight client-side routing
-- TanStack Query (React Query) for server state management
-- Tailwind CSS for utility-first styling
-- shadcn/ui component library built on Radix UI primitives
+**Technology Stack:** React 18 (TypeScript), Vite, Wouter (routing), TanStack Query (server state), Tailwind CSS, shadcn/ui (component library).
 
-**Design System:**
-- Custom theme system using CSS variables for light/dark mode support
-- Typography hierarchy using Inter (UI/body) and Space Grotesk (display) fonts from Google Fonts
-- Standardized spacing primitives (2, 4, 6, 8, 12, 16 units)
-- Consistent border radius values (sm: 3px, md: 6px, lg: 9px)
-- Elevation system for hover/active states using CSS custom properties
+**Design System:** Custom theme with light/dark mode, Inter and Space Grotesk fonts, standardized spacing, border radii, and an elevation system.
 
-**Component Architecture:**
-- Reusable UI components following atomic design patterns
-- Page-level components for major views:
-  - `Landing.tsx` - Multi-path discovery entry point with 4 navigation cards
-  - `VerticalMarket.tsx` - Industry vertical browsing and drill-down
-  - `ProjectExplorer.tsx` - Project search and solution mapping
-  - `InnovationExplorer.tsx` - Category-based solution discovery
-  - `AIExplorer.tsx` - Natural language search interface
-  - `Dashboard.tsx` - Legacy dashboard with sidebar filters (still accessible)
-  - `SolutionDetail.tsx` - Individual solution detail pages
-- Shared components for common patterns (NavHeader, SolutionCard, FilterSidebar)
-- Example components demonstrating usage patterns
+**Component Architecture:** Reusable UI components (atomic design), page-level components for major views (Landing, VerticalMarket, ProjectExplorer, InnovationExplorer, AIExplorer, Dashboard, SolutionDetail), and shared components (NavHeader, SolutionCard, FilterSidebar).
 
-**State Management:**
-- Local component state for UI interactions (filters, search)
-- React Context for global selection state (`SelectedSolutionsProvider`)
-- localStorage persistence for selections and search history
-- URL-based state for shareable views (search queries, shared solution selections)
-- Query parameter hydration on initial load (supports share URLs like `/checkout?solutions=id1,id2`)
-- Query client configuration with disabled refetching for stable data
+**State Management:** Local component state, React Context for global selections (`SelectedSolutionsProvider`), localStorage for persistence (selections, search history), and URL-based state for shareable views.
 
 ### Backend Architecture
 
-**Server Framework:**
-- Express.js for HTTP server and routing
-- TypeScript for type safety across the stack
-- Module-based architecture separating routes, storage, and server setup
+**Server Framework:** Express.js with TypeScript for HTTP server and routing.
 
-**Development Setup:**
-- Vite middleware integration for HMR (Hot Module Replacement)
-- Custom error overlay for development
-- Replit-specific plugins for development tooling
+**Storage Interface:** Abstract `IStorage` interface with an in-memory implementation (`MemStorage`) for development, designed for future database migration.
 
-**Storage Interface:**
-- Abstract IStorage interface defining CRUD operations
-- In-memory storage implementation (MemStorage) for current development
-- Designed for easy migration to database-backed storage
-
-**API Design:**
-- RESTful API structure with /api prefix
-- JSON request/response handling
-- Request logging with duration tracking
-- Response capture for debugging
+**API Design:** RESTful API (`/api` prefix) with JSON handling, request logging, and response capture.
 
 ### Data Model
 
 **Core Entities:**
+- **Solutions:** Construction technology products/services with extensive details including identification, media (images, videos, case studies), classification, company info, contact, metrics (cost, rating, projects used), and features.
+- **Projects:** Construction projects utilizing solutions, including identification, classification, metrics, and solution relationships.
+- **Users:** Designed for future authentication, including credentials.
 
-1. **Solutions** - Construction technology products/services
-   - Identification: id, name, tagline, description
-   - Media: logo, media (optional gallery images, videos, case studies)
-   - Classification: categories, verticals, regions, primaryDivision (CSI), secondaryDivisions
-   - Company info: location, founded, teamSize, website
-   - Contact: contactName, contactEmail, contactPhone
-   - Metrics: averageCost (pricing tier), rating (0-5), projectsUsed (adoption count), baseScore (relevance)
-   - Details: features, useCases
-   - Relations: relatedIds
-   - Media Content:
-     - images: Array of MediaImage (url, caption)
-     - videos: Array of MediaVideo (youtubeId, title, description)
-     - caseStudies: Array of CaseStudy (title, description, projectType, results, pdfUrl)
-
-2. **Projects** - Construction projects using solutions
-   - Identification: id, name, code
-   - Classification: vertical, location
-   - Metrics: value, status
-   - Relations: solutionIds
-   - Description: project details
-
-3. **Users** - Platform users (authentication ready)
-   - Credentials: id, username, password
-   - Designed for future auth implementation
-
-**Data Organization:**
-- Mock data stored in shared/mockData.ts for development
-- Type definitions in shared/solutions.ts and shared/schema.ts
-- Drizzle ORM schemas prepared for PostgreSQL migration
+**Data Organization:** Mock data in `shared/mockData.ts`, type definitions in `shared/solutions.ts` and `shared/schema.ts`, with Drizzle ORM schemas prepared for PostgreSQL.
 
 ### Search and Discovery
 
-**AI-Powered Search:**
-- Natural language query processing
-- Keyword mapping for intelligent matching
-- Multi-factor scoring system considering:
-  - Direct name matches (highest priority)
-  - Category relevance
-  - Vertical market alignment
-  - Use case matching
-  - Feature descriptions
+**AI-Powered Search:** Natural language query processing with multi-factor scoring based on name matches, category, vertical, use case, and feature relevance.
 
-**Filter System:**
-- Multi-dimensional filtering:
-  - Categories (Robotics, Safety, AI, etc.)
-  - Regions (North America, Europe, Asia Pacific, etc.)
-  - Verticals (Commercial, Datacenter, Hospital, etc.)
-- Combined filter logic with AI search integration
-- Real-time filter updates with URL state preservation
+**Filter System:** Multi-dimensional filtering by categories, regions, and verticals, with combined logic and real-time URL state preservation.
 
 **Discovery Pathways:**
+1.  **Vertical Market (`/vertical-market`):** Browse by industry verticals (Datacenter, Hospital, Airport, Commercial, Industrial) to find projects and solutions.
+2.  **Project Explorer (`/project-explorer`):** Search projects by name, code, or vertical to view details and associated solutions.
+3.  **Innovation Explorer (`/innovation-explorer`):** Browse solutions by technology categories (Robotics, Safety, AI, etc.).
+4.  **AI Explorer (`/ai-explore`):** Natural language search interface for intelligent solution discovery.
 
-The application features a multi-path navigation landing page with 4 distinct discovery methods:
+**Unified Solutions Page:** All discovery paths lead to a unified `/solutions` page featuring CSI division-based grouping, collapsible sections, selection checkboxes, a real-time filter sidebar, and AI search integration.
 
-1. **Vertical Market** (`/vertical-market`) - Browse by industry verticals
-   - Select from verticals: Datacenter, Hospital, Airport, Commercial, Industrial
-   - Drill down to see active projects and available solutions for each vertical
-   - View project metadata and which solutions are deployed on each project
-
-2. **Project Explorer** (`/project-explorer`) - Browse by active construction projects
-   - Search projects by name, code, or vertical
-   - View project details including location, value, status, and vertical
-   - See all solutions currently being used on each project
-   - 6 mock projects across different verticals
-
-3. **Innovation Explorer** (`/innovation-explorer`) - Browse by technology categories
-   - Browse by categories: Robotics, Safety, AI, Layout, Estimating, Productivity, Scheduling
-   - Filter solutions by innovation category
-   - View solutions with category tags and vertical applicability
-
-4. **AI Explorer** (`/ai-explore`) - Natural language search interface
-   - Enter queries in plain language (e.g., "layout robotics for hospitals")
-   - AI-powered relevance scoring based on keywords, categories, and verticals
-   - Query parameters preserved in URL for shareability
-   - Suggestion prompts to guide user queries
-
-**Unified Solutions Page:**
-
-All four discovery methods lead to a unified Solutions page (`/solutions`) featuring:
-- CSI division-based grouping (Construction Specifications Institute)
-- Collapsible division sections with primary and secondary solution placement
-- Horizontal scrolling for secondary solutions within each division
-- Selection checkboxes on each solution card
-- Compact, responsive card design with logo, name, tagline, categories, location, and team size
-- Real-time filter sidebar (verticals, categories, regions, team sizes)
-- AI search integration with two-stage filtering (AI relevance + manual filters)
-- "View Selections" button with live count badge
-
-**Checkout Page:**
-
-Dedicated page (`/checkout`) for managing selected solutions:
-- Solutions grouped and displayed by CSI division
-- Each solution shows: icon, name, tagline, cost, rating, project count, category badges
-- Full point of contact section with name, email (mailto link), and phone
-- Action buttons: Share (with URL generation), Print, Export to CSV
-- Selection management: individual deselection, "Clear All", "Continue Browsing"
-- Empty state with "Browse Solutions" call-to-action
-- Shareable URLs support deep linking (e.g., `/checkout?solutions=id1,id2,id3`)
-- LocalStorage + URL parameter hydration for robust persistence
+**Checkout Page (`/checkout`):** Manages selected solutions, displaying them by CSI division with contact information, action buttons (Share, Print, Export to CSV), and robust persistence via LocalStorage and URL parameters.
 
 ## External Dependencies
 
 ### UI Component Library
-- **Radix UI** - Comprehensive set of unstyled, accessible UI primitives including:
-  - Dialog, Dropdown, Popover for overlays
-  - Accordion, Tabs, Collapsible for content organization
-  - Select, Checkbox, Radio for form inputs
-  - Toast, Alert Dialog for notifications
-  - Navigation Menu, Context Menu for navigation
+- **Radix UI:** Unstyled, accessible UI primitives (Dialog, Dropdown, Accordion, Checkbox, etc.).
 
 ### Styling and Design
-- **Tailwind CSS** - Utility-first CSS framework
-- **class-variance-authority** - Component variant management
-- **clsx & tailwind-merge** - Conditional class name utilities
-- **Google Fonts** - Inter and Space Grotesk font families
+- **Tailwind CSS:** Utility-first CSS framework.
+- **class-variance-authority, clsx, tailwind-merge:** Utilities for conditional styling.
+- **Google Fonts:** Inter and Space Grotesk.
 
 ### Data Management
-- **Drizzle ORM** - TypeScript ORM for database operations
-- **Drizzle Zod** - Schema validation integration
-- **@neondatabase/serverless** - Serverless PostgreSQL driver
-- **connect-pg-simple** - PostgreSQL session store (prepared for auth)
+- **Drizzle ORM:** TypeScript ORM.
+- **Drizzle Zod:** Schema validation.
+- **@neondatabase/serverless:** Serverless PostgreSQL driver.
+- **connect-pg-simple:** PostgreSQL session store.
 
 ### Development Tools
-- **Vite** - Build tool and dev server
-- **esbuild** - JavaScript bundler for production builds
-- **tsx** - TypeScript execution for development
-- **@replit/vite-plugin-*** - Replit-specific development enhancements
+- **Vite:** Build tool and dev server.
+- **esbuild:** JavaScript bundler.
+- **tsx:** TypeScript execution.
+- **@replit/vite-plugin-***: Replit-specific enhancements.
 
 ### Utilities
-- **date-fns** - Date manipulation library
-- **nanoid** - Unique ID generation
-- **embla-carousel-react** - Carousel component
-- **react-hook-form** - Form state management
-- **@hookform/resolvers** - Form validation resolvers
-- **zod** - Schema validation
+- **date-fns:** Date manipulation.
+- **nanoid:** Unique ID generation.
+- **embla-carousel-react:** Carousel component.
+- **react-hook-form:** Form state management.
+- **@hookform/resolvers, zod:** Form validation.
 
 ### Future Integration Points
-- PostgreSQL database (Drizzle configured, pending provisioning)
-- Authentication system (user schema and session store ready)
-- External construction tech APIs for real-time data
-- Payment processing for premium features
+- PostgreSQL database.
+- Authentication system.
+- External construction tech APIs.
+- Payment processing.
