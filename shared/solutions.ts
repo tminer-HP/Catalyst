@@ -17,6 +17,12 @@ export interface Solution {
   primaryDivision: string;
   secondaryDivisions?: string[];
   baseScore: number;
+  averageCost: string;
+  rating: number;
+  projectsUsed: number;
+  contactName?: string;
+  contactEmail?: string;
+  contactPhone?: string;
 }
 
 export const CATEGORIES = [

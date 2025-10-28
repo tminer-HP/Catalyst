@@ -2,6 +2,7 @@ import { useState, useEffect, useMemo } from "react";
 import { useLocation, useSearch } from "wouter";
 import { ArrowLeft, SlidersHorizontal, X, ChevronDown, ChevronRight } from "lucide-react";
 import { useSearchHistory } from "@/hooks/useSearchHistory";
+import { useSelectedSolutions } from "@/hooks/useSelectedSolutions";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -48,6 +49,7 @@ export default function Solutions() {
   const [, setLocation] = useLocation();
   const search = useSearch();
   const { addToHistory } = useSearchHistory();
+  const { selectedIds, isSelected, toggleSolution } = useSelectedSolutions();
   
   const [filters, setFilters] = useState<Filters>({
     verticals: [],
@@ -240,20 +242,31 @@ export default function Solutions() {
                 </p>
               </div>
             </div>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => setShowFilters(!showFilters)}
-              data-testid="button-toggle-filters"
-            >
-              <SlidersHorizontal className="w-4 h-4 mr-2" />
-              {showFilters ? 'Hide' : 'Show'} Filters
-              {activeFilterCount > 0 && (
-                <Badge variant="secondary" className="ml-2">
-                  {activeFilterCount}
-                </Badge>
+            <div className="flex items-center gap-2">
+              {selectedIds.length > 0 && (
+                <Button
+                  size="sm"
+                  onClick={() => setLocation("/checkout")}
+                  data-testid="button-view-selections"
+                >
+                  View Selections ({selectedIds.length})
+                </Button>
               )}
-            </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setShowFilters(!showFilters)}
+                data-testid="button-toggle-filters"
+              >
+                <SlidersHorizontal className="w-4 h-4 mr-2" />
+                {showFilters ? 'Hide' : 'Show'} Filters
+                {activeFilterCount > 0 && (
+                  <Badge variant="secondary" className="ml-2">
+                    {activeFilterCount}
+                  </Badge>
+                )}
+              </Button>
+            </div>
           </div>
         </div>
       </header>
@@ -437,7 +450,12 @@ export default function Solutions() {
                           {/* Primary Solutions (Left Column) */}
                           <div className="space-y-3 flex-shrink-0" style={{ width: '280px' }}>
                             {primarySolutions.map(solution => (
-                              <SolutionCard key={solution.id} solution={solution} />
+                              <SolutionCard 
+                                key={solution.id} 
+                                solution={solution} 
+                                isSelected={isSelected(solution.id)}
+                                onToggleSelect={toggleSolution}
+                              />
                             ))}
                           </div>
 
@@ -448,7 +466,11 @@ export default function Solutions() {
                                 <div className="flex gap-3 pb-2">
                                   {secondarySolutions.map(solution => (
                                     <div key={solution.id} className="flex-shrink-0" style={{ width: '280px' }}>
-                                      <SolutionCard solution={solution} />
+                                      <SolutionCard 
+                                        solution={solution} 
+                                        isSelected={isSelected(solution.id)}
+                                        onToggleSelect={toggleSolution}
+                                      />
                                     </div>
                                   ))}
                                 </div>
@@ -489,40 +511,68 @@ export default function Solutions() {
   );
 }
 
-function SolutionCard({ solution }: { solution: SolutionWithScore }) {
+function SolutionCard({ 
+  solution, 
+  isSelected, 
+  onToggleSelect 
+}: { 
+  solution: SolutionWithScore;
+  isSelected: boolean;
+  onToggleSelect: (id: string) => void;
+}) {
   const [, setLocation] = useLocation();
+
+  const handleCardClick = (e: React.MouseEvent) => {
+    if ((e.target as HTMLElement).closest('[data-checkbox]')) {
+      return;
+    }
+    setLocation(`/solution/${solution.id}`);
+  };
 
   return (
     <Card
       className="hover-elevate active-elevate-2 cursor-pointer h-full"
-      onClick={() => setLocation(`/solution/${solution.id}`)}
+      onClick={handleCardClick}
       data-testid={`card-solution-${solution.id}`}
     >
       <CardContent className="p-3">
         <div className="flex items-start gap-2">
-          <div
-            className="w-9 h-9 rounded flex items-center justify-center text-sm font-bold bg-primary/10 text-primary flex-shrink-0"
-            data-testid={`logo-${solution.id}`}
-          >
-            {solution.name.charAt(0)}
-          </div>
-          <div className="flex-1 min-w-0">
-            <h4 className="font-semibold text-sm mb-1 truncate" data-testid={`text-solution-name-${solution.id}`}>
-              {solution.name}
-            </h4>
-            <p className="text-xs text-muted-foreground mb-2 line-clamp-2" data-testid={`text-solution-tagline-${solution.id}`}>
-              {solution.tagline}
-            </p>
-            <div className="flex flex-wrap gap-1 mb-2">
-              {solution.categories.slice(0, 2).map(category => (
-                <Badge key={category} variant="secondary" className="text-xs px-1.5 py-0">
-                  {category}
-                </Badge>
-              ))}
+          <div className="flex items-start gap-2 flex-1 min-w-0">
+            <div 
+              className="pt-1" 
+              data-checkbox
+              onClick={(e) => e.stopPropagation()}
+            >
+              <Checkbox
+                checked={isSelected}
+                onCheckedChange={() => onToggleSelect(solution.id)}
+                data-testid={`checkbox-select-${solution.id}`}
+              />
             </div>
-            <div className="flex items-center gap-3 text-xs text-muted-foreground">
-              <span className="truncate" data-testid={`text-location-${solution.id}`}>{solution.location}</span>
-              <span className="truncate" data-testid={`text-teamsize-${solution.id}`}>{solution.teamSize}</span>
+            <div
+              className="w-9 h-9 rounded flex items-center justify-center text-sm font-bold bg-primary/10 text-primary flex-shrink-0"
+              data-testid={`logo-${solution.id}`}
+            >
+              {solution.name.charAt(0)}
+            </div>
+            <div className="flex-1 min-w-0">
+              <h4 className="font-semibold text-sm mb-1 truncate" data-testid={`text-solution-name-${solution.id}`}>
+                {solution.name}
+              </h4>
+              <p className="text-xs text-muted-foreground mb-2 line-clamp-2" data-testid={`text-solution-tagline-${solution.id}`}>
+                {solution.tagline}
+              </p>
+              <div className="flex flex-wrap gap-1 mb-2">
+                {solution.categories.slice(0, 2).map(category => (
+                  <Badge key={category} variant="secondary" className="text-xs px-1.5 py-0">
+                    {category}
+                  </Badge>
+                ))}
+              </div>
+              <div className="flex items-center gap-3 text-xs text-muted-foreground">
+                <span className="truncate" data-testid={`text-location-${solution.id}`}>{solution.location}</span>
+                <span className="truncate" data-testid={`text-teamsize-${solution.id}`}>{solution.teamSize}</span>
+              </div>
             </div>
           </div>
         </div>

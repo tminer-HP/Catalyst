@@ -9,6 +9,27 @@ The application provides multiple discovery pathways: browsing by vertical marke
 ## Recent Changes
 
 ### October 28, 2025
+
+- **Checkout/Selection System**: Complete solution selection and checkout workflow
+  - Users can select multiple solutions from the Solutions page via checkboxes
+  - "View Selections" button appears in header showing selection count
+  - Dedicated Checkout page (`/checkout`) displaying selected solutions
+  - Solutions grouped by CSI divisions with collapsible sections
+  - Each solution shows: name, tagline, cost, rating, project usage, and full contact information
+  - Share feature generates shareable URLs with query parameters (e.g., `/checkout?solutions=id1,id2`)
+  - Print and Export (CSV) functionality for selected solutions
+  - Selection state persists in localStorage and survives page refreshes
+  - URL-based hydration allows shared links to restore selections in new sessions
+  - Robust error handling for corrupted localStorage data
+  - "Clear All" and individual deselection capabilities
+
+- **Extended Solution Data Model**: Added business-critical fields to all solutions
+  - `averageCost`: Pricing indicator ("$$", "$$$", "$$$$")
+  - `rating`: Solution rating (0-5 scale with decimals)
+  - `projectsUsed`: Number of projects using the solution
+  - `contactName`, `contactEmail`, `contactPhone`: Point of contact information
+  - All mock solutions updated with realistic contact and pricing data
+
 - **ChatGPT-style Search History Sidebar**: Added a persistent left sidebar with search history functionality
   - Logo displayed at top of sidebar
   - All discovery methods (Vertical Market, Project Explorer, Innovation Explorer, AI Search) now track user sessions
@@ -55,8 +76,11 @@ Preferred communication style: Simple, everyday language.
 - Example components demonstrating usage patterns
 
 **State Management:**
-- Local component state for UI interactions (filters, search, selections)
-- URL-based state for shareable views (search queries, selected items)
+- Local component state for UI interactions (filters, search)
+- React Context for global selection state (`SelectedSolutionsProvider`)
+- localStorage persistence for selections and search history
+- URL-based state for shareable views (search queries, shared solution selections)
+- Query parameter hydration on initial load (supports share URLs like `/checkout?solutions=id1,id2`)
 - Query client configuration with disabled refetching for stable data
 
 ### Backend Architecture
@@ -89,8 +113,10 @@ Preferred communication style: Simple, everyday language.
 1. **Solutions** - Construction technology products/services
    - Identification: id, name, tagline, description
    - Media: logo
-   - Classification: categories, verticals, regions
+   - Classification: categories, verticals, regions, primaryDivision (CSI), secondaryDivisions
    - Company info: location, founded, teamSize, website
+   - Contact: contactName, contactEmail, contactPhone
+   - Metrics: averageCost (pricing tier), rating (0-5), projectsUsed (adoption count), baseScore (relevance)
    - Details: features, useCases
    - Relations: relatedIds
 
@@ -155,6 +181,30 @@ The application features a multi-path navigation landing page with 4 distinct di
    - AI-powered relevance scoring based on keywords, categories, and verticals
    - Query parameters preserved in URL for shareability
    - Suggestion prompts to guide user queries
+
+**Unified Solutions Page:**
+
+All four discovery methods lead to a unified Solutions page (`/solutions`) featuring:
+- CSI division-based grouping (Construction Specifications Institute)
+- Collapsible division sections with primary and secondary solution placement
+- Horizontal scrolling for secondary solutions within each division
+- Selection checkboxes on each solution card
+- Compact, responsive card design with logo, name, tagline, categories, location, and team size
+- Real-time filter sidebar (verticals, categories, regions, team sizes)
+- AI search integration with two-stage filtering (AI relevance + manual filters)
+- "View Selections" button with live count badge
+
+**Checkout Page:**
+
+Dedicated page (`/checkout`) for managing selected solutions:
+- Solutions grouped and displayed by CSI division
+- Each solution shows: icon, name, tagline, cost, rating, project count, category badges
+- Full point of contact section with name, email (mailto link), and phone
+- Action buttons: Share (with URL generation), Print, Export to CSV
+- Selection management: individual deselection, "Clear All", "Continue Browsing"
+- Empty state with "Browse Solutions" call-to-action
+- Shareable URLs support deep linking (e.g., `/checkout?solutions=id1,id2,id3`)
+- LocalStorage + URL parameter hydration for robust persistence
 
 ## External Dependencies
 
