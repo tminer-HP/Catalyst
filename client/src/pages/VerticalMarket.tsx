@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useLocation } from "wouter";
+import { useLocation, useSearch } from "wouter";
 import { ArrowLeft, Building2, Factory, Plane, Heart, ShoppingBag } from "lucide-react";
 import { useSearchHistory } from "@/hooks/useSearchHistory";
 import { Button } from "@/components/ui/button";
@@ -18,8 +18,19 @@ const verticalIcons: Record<string, any> = {
 
 export default function VerticalMarket() {
   const [, setLocation] = useLocation();
+  const search = useSearch();
   const [selectedVertical, setSelectedVertical] = useState<string | null>(null);
   const { addToHistory } = useSearchHistory();
+
+  useEffect(() => {
+    const searchParams = new URLSearchParams(search);
+    const verticalParam = searchParams.get("v");
+    if (verticalParam && VERTICALS.includes(verticalParam)) {
+      setSelectedVertical(verticalParam);
+    } else {
+      setSelectedVertical(null);
+    }
+  }, [search]);
 
   useEffect(() => {
     if (selectedVertical) {
@@ -89,7 +100,7 @@ export default function VerticalMarket() {
                   <Card
                     key={vertical}
                     className="p-6 cursor-pointer hover-elevate active-elevate-2 transition-all"
-                    onClick={() => setSelectedVertical(vertical)}
+                    onClick={() => setLocation(`/vertical-market?v=${vertical}`)}
                     data-testid={`card-vertical-${vertical.toLowerCase()}`}
                   >
                     <div className="flex items-start gap-4">
@@ -116,7 +127,7 @@ export default function VerticalMarket() {
               <div>
                 <Button
                   variant="ghost"
-                  onClick={() => setSelectedVertical(null)}
+                  onClick={() => setLocation("/vertical-market")}
                   className="mb-4"
                   data-testid="button-back-to-verticals"
                 >

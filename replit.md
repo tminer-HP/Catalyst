@@ -6,6 +6,18 @@ Diverge Connect is a construction technology discovery platform that serves as a
 
 The application provides multiple discovery pathways: browsing by vertical markets (datacenters, hospitals, airports), exploring specific projects, searching by innovation categories, and AI-powered natural language search. It's designed as a sophisticated B2B SaaS platform with enterprise aesthetics inspired by ProductHunt, Linear, and Clutch.
 
+## Recent Changes
+
+### October 28, 2025
+- **ChatGPT-style Search History Sidebar**: Added a persistent left sidebar with search history functionality
+  - Logo displayed at top of sidebar
+  - All discovery methods (Vertical Market, Project Explorer, Innovation Explorer, AI Search) now track user sessions
+  - History items stored in localStorage and persist across sessions
+  - Click any history item to return to previous searches/explorations
+  - "New Search" button returns to landing page
+  - Clear history option available
+  - Up to 20 most recent sessions saved
+
 ## User Preferences
 
 Preferred communication style: Simple, everyday language.

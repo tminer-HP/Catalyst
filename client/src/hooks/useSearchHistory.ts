@@ -10,19 +10,36 @@ export interface HistoryItem {
 
 const HISTORY_KEY = 'catalyst_search_history';
 const MAX_HISTORY_ITEMS = 20;
+const HISTORY_UPDATE_EVENT = 'catalyst_history_update';
+
+function getStoredHistory(): HistoryItem[] {
+  const stored = localStorage.getItem(HISTORY_KEY);
+  if (stored) {
+    try {
+      return JSON.parse(stored);
+    } catch (e) {
+      console.error('Failed to parse history:', e);
+      return [];
+    }
+  }
+  return [];
+}
+
+function saveHistory(history: HistoryItem[]) {
+  localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
+  window.dispatchEvent(new CustomEvent(HISTORY_UPDATE_EVENT));
+}
 
 export function useSearchHistory() {
-  const [history, setHistory] = useState<HistoryItem[]>([]);
+  const [history, setHistory] = useState<HistoryItem[]>(getStoredHistory);
 
   useEffect(() => {
-    const stored = localStorage.getItem(HISTORY_KEY);
-    if (stored) {
-      try {
-        setHistory(JSON.parse(stored));
-      } catch (e) {
-        console.error('Failed to parse history:', e);
-      }
-    }
+    const handleUpdate = () => {
+      setHistory(getStoredHistory());
+    };
+
+    window.addEventListener(HISTORY_UPDATE_EVENT, handleUpdate);
+    return () => window.removeEventListener(HISTORY_UPDATE_EVENT, handleUpdate);
   }, []);
 
   const addToHistory = (item: Omit<HistoryItem, 'id' | 'timestamp'>) => {
@@ -32,17 +49,15 @@ export function useSearchHistory() {
       timestamp: Date.now(),
     };
 
-    setHistory((prev) => {
-      const filtered = prev.filter(h => h.path !== item.path);
-      const updated = [newItem, ...filtered].slice(0, MAX_HISTORY_ITEMS);
-      localStorage.setItem(HISTORY_KEY, JSON.stringify(updated));
-      return updated;
-    });
+    const current = getStoredHistory();
+    const filtered = current.filter(h => h.path !== item.path);
+    const updated = [newItem, ...filtered].slice(0, MAX_HISTORY_ITEMS);
+    saveHistory(updated);
   };
 
   const clearHistory = () => {
-    setHistory([]);
     localStorage.removeItem(HISTORY_KEY);
+    window.dispatchEvent(new CustomEvent(HISTORY_UPDATE_EVENT));
   };
 
   return { history, addToHistory, clearHistory };

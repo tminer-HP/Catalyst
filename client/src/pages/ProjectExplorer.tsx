@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useLocation } from "wouter";
+import { useLocation, useSearch } from "wouter";
 import { ArrowLeft, Search, Building, MapPin, DollarSign } from "lucide-react";
 import { useSearchHistory } from "@/hooks/useSearchHistory";
 import { Button } from "@/components/ui/button";
@@ -10,9 +10,20 @@ import { mockProjects, mockSolutions } from "@shared/mockData";
 
 export default function ProjectExplorer() {
   const [, setLocation] = useLocation();
+  const search = useSearch();
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedProject, setSelectedProject] = useState<string | null>(null);
   const { addToHistory } = useSearchHistory();
+
+  useEffect(() => {
+    const searchParams = new URLSearchParams(search);
+    const projectParam = searchParams.get("p");
+    if (projectParam && mockProjects.find(p => p.id === projectParam)) {
+      setSelectedProject(projectParam);
+    } else {
+      setSelectedProject(null);
+    }
+  }, [search]);
 
   useEffect(() => {
     if (selectedProject) {
@@ -89,7 +100,7 @@ export default function ProjectExplorer() {
                 <Card
                   key={project.id}
                   className="p-6 cursor-pointer hover-elevate active-elevate-2 transition-all"
-                  onClick={() => setSelectedProject(project.id)}
+                  onClick={() => setLocation(`/project-explorer?p=${project.id}`)}
                   data-testid={`card-project-${project.id}`}
                 >
                   <div className="flex items-start justify-between mb-4">
@@ -140,7 +151,7 @@ export default function ProjectExplorer() {
           <div>
             <Button
               variant="ghost"
-              onClick={() => setSelectedProject(null)}
+              onClick={() => setLocation("/project-explorer")}
               className="mb-6"
               data-testid="button-back-to-projects"
             >

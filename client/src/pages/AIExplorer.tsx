@@ -23,27 +23,30 @@ export default function AIExplorer() {
 
   useEffect(() => {
     if (initialQuery) {
+      setQuery(initialQuery);
+      setDisplayQuery(initialQuery);
       setResults(aiSearchSolutions(initialQuery, mockSolutions));
       addToHistory({
         type: 'ai',
         title: initialQuery,
         path: `/ai-explore?q=${encodeURIComponent(initialQuery)}`,
       });
+    } else {
+      setQuery("");
+      setDisplayQuery("");
+      setResults([]);
     }
   }, [initialQuery]);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (query.trim()) {
-      setDisplayQuery(query);
-      setResults(aiSearchSolutions(query, mockSolutions));
+      setLocation(`/ai-explore?q=${encodeURIComponent(query)}`);
     }
   };
 
   const handleNewPrompt = () => {
-    setQuery("");
-    setDisplayQuery("");
-    setResults([]);
+    setLocation("/ai-explore");
   };
 
   return (
@@ -117,9 +120,7 @@ export default function AIExplorer() {
                     key={idx}
                     type="button"
                     onClick={() => {
-                      setQuery(suggestion);
-                      setDisplayQuery(suggestion);
-                      setResults(aiSearchSolutions(suggestion, mockSolutions));
+                      setLocation(`/ai-explore?q=${encodeURIComponent(suggestion)}`);
                     }}
                     className="text-xs px-3 py-1 rounded-full bg-background/50 border hover:bg-background hover:border-primary/50 transition-colors"
                     data-testid={`button-suggestion-${idx}`}

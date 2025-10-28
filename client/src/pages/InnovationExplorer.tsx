@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useLocation } from "wouter";
+import { useLocation, useSearch } from "wouter";
 import { ArrowLeft, Cpu, Shield, Calculator, Wrench, Eye } from "lucide-react";
 import { useSearchHistory } from "@/hooks/useSearchHistory";
 import { Button } from "@/components/ui/button";
@@ -19,8 +19,19 @@ const categoryIcons: Record<string, any> = {
 
 export default function InnovationExplorer() {
   const [, setLocation] = useLocation();
+  const search = useSearch();
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const { addToHistory } = useSearchHistory();
+
+  useEffect(() => {
+    const searchParams = new URLSearchParams(search);
+    const categoryParam = searchParams.get("c");
+    if (categoryParam && CATEGORIES.includes(categoryParam)) {
+      setSelectedCategory(categoryParam);
+    } else {
+      setSelectedCategory(null);
+    }
+  }, [search]);
 
   useEffect(() => {
     if (selectedCategory) {
@@ -81,7 +92,7 @@ export default function InnovationExplorer() {
                   <Card
                     key={category}
                     className="p-6 cursor-pointer hover-elevate active-elevate-2 transition-all"
-                    onClick={() => setSelectedCategory(category)}
+                    onClick={() => setLocation(`/innovation-explorer?c=${category}`)}
                     data-testid={`card-category-${category.toLowerCase()}`}
                   >
                     <div className="flex items-start gap-4">
@@ -105,7 +116,7 @@ export default function InnovationExplorer() {
             <div className="mb-8">
               <Button
                 variant="ghost"
-                onClick={() => setSelectedCategory(null)}
+                onClick={() => setLocation("/innovation-explorer")}
                 className="mb-4"
                 data-testid="button-back-to-categories"
               >
