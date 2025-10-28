@@ -13,7 +13,7 @@ import {
   SidebarMenuButton,
 } from "@/components/ui/sidebar";
 import { useSearchHistory, type HistoryItem } from "@/hooks/useSearchHistory";
-import logoUrl from "@assets/image_1761678131803.png";
+import logoUrl from "@assets/image (1)_1761686720998.png";
 
 const typeIcons = {
   vertical: Building2,
