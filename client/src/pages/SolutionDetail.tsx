@@ -130,6 +130,89 @@ export default function SolutionDetail() {
                 ))}
               </div>
             </div>
+
+            {solution.media && (
+              <div className="space-y-8">
+                {solution.media.images && solution.media.images.length > 0 && (
+                  <div>
+                    <h2 className="text-2xl font-semibold mb-4">Gallery</h2>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      {solution.media.images.map((image, index) => (
+                        <Card key={index} className="overflow-hidden">
+                          <img
+                            src={image.url}
+                            alt={image.caption}
+                            className="w-full h-64 object-cover"
+                            data-testid={`img-gallery-${index}`}
+                          />
+                          <div className="p-3">
+                            <p className="text-sm text-muted-foreground">{image.caption}</p>
+                          </div>
+                        </Card>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {solution.media.videos && solution.media.videos.length > 0 && (
+                  <div>
+                    <h2 className="text-2xl font-semibold mb-4">Videos</h2>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      {solution.media.videos.map((video, index) => (
+                        <Card key={index} className="overflow-hidden">
+                          <div className="aspect-video">
+                            <iframe
+                              width="100%"
+                              height="100%"
+                              src={`https://www.youtube.com/embed/${video.youtubeId}`}
+                              title={video.title}
+                              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                              allowFullScreen
+                              data-testid={`video-${index}`}
+                            />
+                          </div>
+                          <div className="p-4">
+                            <h3 className="font-semibold mb-2">{video.title}</h3>
+                            {video.description && (
+                              <p className="text-sm text-muted-foreground">{video.description}</p>
+                            )}
+                          </div>
+                        </Card>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {solution.media.caseStudies && solution.media.caseStudies.length > 0 && (
+                  <div>
+                    <h2 className="text-2xl font-semibold mb-4">Case Studies</h2>
+                    <div className="space-y-4">
+                      {solution.media.caseStudies.map((caseStudy, index) => (
+                        <Card key={index} className="p-6">
+                          <div className="flex flex-wrap items-start justify-between gap-2 mb-3">
+                            <h3 className="font-semibold text-lg">{caseStudy.title}</h3>
+                            <Badge variant="secondary">{caseStudy.projectType}</Badge>
+                          </div>
+                          <p className="text-muted-foreground mb-4">{caseStudy.description}</p>
+                          <div className="bg-primary/5 rounded p-4 mb-4">
+                            <p className="text-sm font-medium mb-1">Results:</p>
+                            <p className="text-sm text-muted-foreground">{caseStudy.results}</p>
+                          </div>
+                          {caseStudy.pdfUrl && (
+                            <Button variant="outline" size="sm" asChild>
+                              <a href={caseStudy.pdfUrl} target="_blank" rel="noopener noreferrer">
+                                <ExternalLink className="h-4 w-4 mr-2" />
+                                Download PDF
+                              </a>
+                            </Button>
+                          )}
+                        </Card>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
           </div>
 
           <div className="space-y-6">

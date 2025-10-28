@@ -116,6 +116,31 @@ export const mockSolutions: Solution[] = [
     contactName: "Sales Team",
     contactEmail: "hello@canvas.build",
     contactPhone: "(415) 555-0123",
+    media: {
+      images: [
+        { url: "https://images.unsplash.com/photo-1581094794329-c8112d108627?w=800", caption: "Canvas robot performing automated drywall finishing" },
+        { url: "https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?w=800", caption: "Robot working alongside construction crew" },
+        { url: "https://images.unsplash.com/photo-1590393769985-53c3538f2866?w=800", caption: "Finished commercial office interior" },
+      ],
+      videos: [
+        { youtubeId: "FxQTY-W6GIo", title: "Canvas Robot in Action", description: "See how our autonomous robot transforms drywall finishing on commercial projects" },
+        { youtubeId: "2kpe0KLg7w8", title: "Customer Success Story", description: "Major contractor shares their experience using Canvas robots" },
+      ],
+      caseStudies: [
+        {
+          title: "San Francisco Office Tower",
+          description: "Canvas robots completed drywall finishing 40% faster than traditional methods on this 20-story commercial project.",
+          projectType: "Commercial Office",
+          results: "40% time savings, 25% cost reduction, zero defects",
+        },
+        {
+          title: "Healthcare Facility Expansion",
+          description: "Delivered consistent, high-quality finishing across 200,000 sq ft of hospital space during occupied renovation.",
+          projectType: "Healthcare",
+          results: "Maintained schedule, improved quality scores, minimal disruption",
+        },
+      ],
+    },
   },
   {
     id: "dusty-robotics",
@@ -152,6 +177,31 @@ export const mockSolutions: Solution[] = [
     contactName: "Enterprise Sales",
     contactEmail: "sales@dustyrobotics.com",
     contactPhone: "(650) 555-0142",
+    media: {
+      images: [
+        { url: "https://images.unsplash.com/photo-1581094271901-8022df4466f9?w=800", caption: "Dusty FieldPrinter robot on datacenter project" },
+        { url: "https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=800", caption: "Precision MEP layout markings on concrete floor" },
+        { url: "https://images.unsplash.com/photo-1613545325268-9265e242f1e5?w=800", caption: "BIM model coordination view" },
+      ],
+      videos: [
+        { youtubeId: "u7qRD6AWFVY", title: "FieldPrinter Technology Overview", description: "How Dusty's robotic layout system transforms construction accuracy" },
+        { youtubeId: "wLP_Po0htkE", title: "Datacenter Case Study", description: "See how Dusty helped complete a major datacenter ahead of schedule" },
+      ],
+      caseStudies: [
+        {
+          title: "Hyperscale Datacenter Layout",
+          description: "Dusty robots laid out 500,000+ MEP points with millimeter precision across 250,000 sq ft, eliminating costly rework.",
+          projectType: "Datacenter",
+          results: "95% reduction in layout time, zero layout-related RFIs, 3 weeks ahead of schedule",
+        },
+        {
+          title: "Hospital MEP Coordination",
+          description: "Complex MEP systems coordinated and laid out across 8 floors of critical healthcare infrastructure.",
+          projectType: "Healthcare",
+          results: "100% first-time quality, saved 6 weeks, improved trade coordination",
+        },
+      ],
+    },
   },
   {
     id: "spot-ai",
@@ -172,6 +222,31 @@ export const mockSolutions: Solution[] = [
       "Automated incident documentation",
       "Intelligent search across video footage",
     ],
+    media: {
+      images: [
+        { url: "https://images.unsplash.com/photo-1590479773265-7464e5d48118?w=800", caption: "AI-powered camera monitoring construction site" },
+        { url: "https://images.unsplash.com/photo-1581092160562-40aa08e78837?w=800", caption: "Real-time safety dashboard interface" },
+        { url: "https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=800", caption: "Workers with proper PPE on monitored site" },
+      ],
+      videos: [
+        { youtubeId: "Hw8FaK6IoHs", title: "SPOT AI Platform Demo", description: "Complete walkthrough of the AI-powered safety monitoring platform" },
+        { youtubeId: "j7DKWT1Kmq8", title: "Safety Success Story", description: "How one contractor reduced incidents by 60% with SPOT AI" },
+      ],
+      caseStudies: [
+        {
+          title: "Major Infrastructure Project Safety",
+          description: "Deployed across 15 active zones on a $500M infrastructure project, SPOT AI detected and prevented numerous safety incidents.",
+          projectType: "Infrastructure",
+          results: "60% reduction in safety incidents, 100% PPE compliance, saved 2 lives",
+        },
+        {
+          title: "Industrial Facility Construction",
+          description: "Monitored high-risk activities including elevated work and heavy equipment operations across 50-acre industrial site.",
+          projectType: "Industrial Manufacturing",
+          results: "Zero lost-time accidents, improved safety culture, real-time incident response",
+        },
+      ],
+    },
     useCases: [
       "Worker safety compliance monitoring",
       "Site security and theft prevention",

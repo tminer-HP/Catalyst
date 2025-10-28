@@ -10,6 +10,29 @@ The application provides multiple discovery pathways: browsing by vertical marke
 
 ### October 28, 2025
 
+- **Company Media Sections**: Added comprehensive media support to company profiles
+  - **Gallery Section**: Image galleries with captions for product photos and project imagery
+  - **Videos Section**: Embedded YouTube videos showcasing product demos and customer stories
+  - **Case Studies Section**: Detailed project case studies with project type, description, and measurable results
+  - Media schema includes MediaImage, MediaVideo, and CaseStudy interfaces
+  - Conditional rendering - sections only display if media exists
+  - Updated Canvas Robotics, Dusty Robotics, and SPOT AI with sample media content
+  - Images sourced from Unsplash with construction-related photography
+  - YouTube embeds use construction technology demonstration videos
+  - Case studies feature project type badges and highlighted results sections
+
+- **Company Logo Integration**: Replaced placeholder first-letter logos with real company logos
+  - Integrated Clearbit Logo API for automatic company logo fetching
+  - Logo URL format: `https://logo.clearbit.com/{company-website}`
+  - Graceful fallback to styled first-letter if logo unavailable
+  - Applied to Solutions page cards, Solution Detail headers, and Related Solutions cards
+  - Consistent error handling with useState tracking across all logo instances
+
+- **Complete Branding Update**: Renamed application from "Diverge Connect" to "Catalyst"
+  - Updated all references across codebase (NavHeader, index.html, documentation)
+  - Changed logo icon from "D" to "C"
+  - Updated design guidelines and project documentation
+
 - **SolutionDetail Page Improvements**: Fixed navigation and logo display issues
   - **Navigation Fix**: "Back" button now uses browser history (`window.history.back()`) instead of hardcoded `/dashboard` path
   - Properly returns to previous page (Solutions, Project Explorer, etc.) instead of always going to Dashboard
@@ -122,13 +145,17 @@ Preferred communication style: Simple, everyday language.
 
 1. **Solutions** - Construction technology products/services
    - Identification: id, name, tagline, description
-   - Media: logo
+   - Media: logo, media (optional gallery images, videos, case studies)
    - Classification: categories, verticals, regions, primaryDivision (CSI), secondaryDivisions
    - Company info: location, founded, teamSize, website
    - Contact: contactName, contactEmail, contactPhone
    - Metrics: averageCost (pricing tier), rating (0-5), projectsUsed (adoption count), baseScore (relevance)
    - Details: features, useCases
    - Relations: relatedIds
+   - Media Content:
+     - images: Array of MediaImage (url, caption)
+     - videos: Array of MediaVideo (youtubeId, title, description)
+     - caseStudies: Array of CaseStudy (title, description, projectType, results, pdfUrl)
 
 2. **Projects** - Construction projects using solutions
    - Identification: id, name, code

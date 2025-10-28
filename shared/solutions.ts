@@ -1,3 +1,22 @@
+export interface MediaImage {
+  url: string;
+  caption: string;
+}
+
+export interface MediaVideo {
+  youtubeId: string;
+  title: string;
+  description?: string;
+}
+
+export interface CaseStudy {
+  title: string;
+  description: string;
+  projectType: string;
+  results: string;
+  pdfUrl?: string;
+}
+
 export interface Solution {
   id: string;
   name: string;
@@ -23,6 +42,11 @@ export interface Solution {
   contactName?: string;
   contactEmail?: string;
   contactPhone?: string;
+  media?: {
+    images?: MediaImage[];
+    videos?: MediaVideo[];
+    caseStudies?: CaseStudy[];
+  };
 }
 
 export const CATEGORIES = [
