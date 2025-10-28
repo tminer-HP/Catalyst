@@ -49,13 +49,19 @@ export default function SearchHistory() {
   return (
     <Sidebar collapsible="icon">
       <SidebarHeader className="p-4 border-b">
-        <div className="flex justify-center mb-3 group-data-[collapsible=icon]:mb-0">
+        <button
+          type="button"
+          onClick={() => setLocation("/")}
+          className="flex justify-center mb-3 group-data-[collapsible=icon]:mb-0 hover-elevate active-elevate-2 rounded-md p-2 -m-2"
+          aria-label="Go to home page"
+          data-testid="button-logo-home"
+        >
           <img 
             src={logoUrl} 
             alt="Catalyst Logo" 
             className="h-16 group-data-[collapsible=icon]:h-8 transition-all" 
           />
-        </div>
+        </button>
         <Button
           variant="outline"
           className="w-full group-data-[collapsible=icon]:w-8 group-data-[collapsible=icon]:h-8 group-data-[collapsible=icon]:p-0"
