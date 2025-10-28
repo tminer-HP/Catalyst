@@ -58,6 +58,7 @@ export default function Solutions() {
   
   const [aiQuery, setAiQuery] = useState<string | null>(null);
   const [collapsedDivisions, setCollapsedDivisions] = useState<Set<string>>(new Set());
+  const [showFilters, setShowFilters] = useState(true);
 
   useEffect(() => {
     const searchParams = new URLSearchParams(search);
@@ -220,9 +221,9 @@ export default function Solutions() {
   return (
     <div className="min-h-screen bg-background">
       <header className="border-b sticky top-0 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 z-10">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8 py-4">
+        <div className="max-w-[1600px] mx-auto px-4 lg:px-6 py-3">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-3">
               <SidebarTrigger data-testid="button-sidebar-toggle" />
               <Button
                 variant="ghost"
@@ -233,166 +234,175 @@ export default function Solutions() {
                 <ArrowLeft className="w-5 h-5" />
               </Button>
               <div>
-                <h1 className="font-display text-2xl font-bold">Solutions</h1>
-                <p className="text-sm text-muted-foreground">
-                  {totalSolutions} {totalSolutions === 1 ? 'solution' : 'solutions'} found
+                <h1 className="font-display text-xl font-bold">Solutions</h1>
+                <p className="text-xs text-muted-foreground">
+                  {totalSolutions} {totalSolutions === 1 ? 'solution' : 'solutions'}
                 </p>
               </div>
             </div>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setShowFilters(!showFilters)}
+              data-testid="button-toggle-filters"
+            >
+              <SlidersHorizontal className="w-4 h-4 mr-2" />
+              {showFilters ? 'Hide' : 'Show'} Filters
+              {activeFilterCount > 0 && (
+                <Badge variant="secondary" className="ml-2">
+                  {activeFilterCount}
+                </Badge>
+              )}
+            </Button>
           </div>
         </div>
       </header>
 
-      <main className="max-w-7xl mx-auto px-6 lg:px-8 py-8">
-        <div className="flex gap-8">
-          <aside className="w-72 flex-shrink-0">
-            <div className="sticky top-24">
-              <div className="flex items-center justify-between mb-6">
-                <div className="flex items-center gap-2">
-                  <SlidersHorizontal className="w-5 h-5" />
-                  <h2 className="font-display text-lg font-bold">Filters</h2>
+      <main className="max-w-[1600px] mx-auto px-4 lg:px-6 py-4">
+        <div className="flex gap-4">
+          {showFilters && (
+            <aside className="w-56 flex-shrink-0">
+              <div className="sticky top-20">
+                <div className="flex items-center justify-between mb-4">
+                  <h2 className="font-display text-sm font-bold">Filters</h2>
                   {activeFilterCount > 0 && (
-                    <Badge variant="secondary" data-testid="badge-filter-count">
-                      {activeFilterCount}
-                    </Badge>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={clearFilters}
+                      className="h-7 text-xs"
+                      data-testid="button-clear-filters"
+                    >
+                      Clear
+                    </Button>
                   )}
                 </div>
-                {activeFilterCount > 0 && (
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={clearFilters}
-                    data-testid="button-clear-filters"
-                  >
-                    Clear all
-                  </Button>
-                )}
+
+                <div className="space-y-4">
+                  <Collapsible defaultOpen>
+                    <CollapsibleTrigger asChild>
+                      <Button
+                        variant="ghost"
+                        className="w-full justify-between p-0 h-auto text-sm font-semibold hover:no-underline"
+                        data-testid="button-toggle-verticals"
+                      >
+                        Vertical Market
+                        <ChevronDown className="w-4 h-4" />
+                      </Button>
+                    </CollapsibleTrigger>
+                    <CollapsibleContent className="mt-3 space-y-2">
+                      {VERTICALS.map(vertical => (
+                        <div key={vertical} className="flex items-center space-x-2">
+                          <Checkbox
+                            id={`vertical-${vertical}`}
+                            checked={filters.verticals.includes(vertical)}
+                            onCheckedChange={() => toggleFilter("verticals", vertical)}
+                            data-testid={`checkbox-vertical-${vertical.toLowerCase().replace(/\s+/g, '-')}`}
+                          />
+                          <Label htmlFor={`vertical-${vertical}`} className="cursor-pointer text-sm">
+                            {vertical}
+                          </Label>
+                        </div>
+                      ))}
+                    </CollapsibleContent>
+                  </Collapsible>
+
+                  <Separator />
+
+                  <Collapsible defaultOpen>
+                    <CollapsibleTrigger asChild>
+                      <Button
+                        variant="ghost"
+                        className="w-full justify-between p-0 h-auto text-sm font-semibold hover:no-underline"
+                        data-testid="button-toggle-categories"
+                      >
+                        Category
+                        <ChevronDown className="w-4 h-4" />
+                      </Button>
+                    </CollapsibleTrigger>
+                    <CollapsibleContent className="mt-3 space-y-2">
+                      {CATEGORIES.map(category => (
+                        <div key={category} className="flex items-center space-x-2">
+                          <Checkbox
+                            id={`category-${category}`}
+                            checked={filters.categories.includes(category)}
+                            onCheckedChange={() => toggleFilter("categories", category)}
+                            data-testid={`checkbox-category-${category.toLowerCase().replace(/\s+/g, '-')}`}
+                          />
+                          <Label htmlFor={`category-${category}`} className="cursor-pointer text-sm">
+                            {category}
+                          </Label>
+                        </div>
+                      ))}
+                    </CollapsibleContent>
+                  </Collapsible>
+
+                  <Separator />
+
+                  <Collapsible defaultOpen>
+                    <CollapsibleTrigger asChild>
+                      <Button
+                        variant="ghost"
+                        className="w-full justify-between p-0 h-auto text-sm font-semibold hover:no-underline"
+                        data-testid="button-toggle-regions"
+                      >
+                        Region
+                        <ChevronDown className="w-4 h-4" />
+                      </Button>
+                    </CollapsibleTrigger>
+                    <CollapsibleContent className="mt-3 space-y-2">
+                      {REGIONS.map(region => (
+                        <div key={region} className="flex items-center space-x-2">
+                          <Checkbox
+                            id={`region-${region}`}
+                            checked={filters.regions.includes(region)}
+                            onCheckedChange={() => toggleFilter("regions", region)}
+                            data-testid={`checkbox-region-${region.toLowerCase().replace(/\s+/g, '-')}`}
+                          />
+                          <Label htmlFor={`region-${region}`} className="cursor-pointer text-sm">
+                            {region}
+                          </Label>
+                        </div>
+                      ))}
+                    </CollapsibleContent>
+                  </Collapsible>
+
+                  <Separator />
+
+                  <Collapsible defaultOpen>
+                    <CollapsibleTrigger asChild>
+                      <Button
+                        variant="ghost"
+                        className="w-full justify-between p-0 h-auto text-sm font-semibold hover:no-underline"
+                        data-testid="button-toggle-teamsize"
+                      >
+                        Team Size
+                        <ChevronDown className="w-4 h-4" />
+                      </Button>
+                    </CollapsibleTrigger>
+                    <CollapsibleContent className="mt-3 space-y-2">
+                      {TEAM_SIZES.map(size => (
+                        <div key={size} className="flex items-center space-x-2">
+                          <Checkbox
+                            id={`teamsize-${size}`}
+                            checked={filters.teamSizes.includes(size)}
+                            onCheckedChange={() => toggleFilter("teamSizes", size)}
+                            data-testid={`checkbox-teamsize-${size.toLowerCase().replace(/\+/g, 'plus').replace(/-/g, '-')}`}
+                          />
+                          <Label htmlFor={`teamsize-${size}`} className="cursor-pointer text-sm">
+                            {size} employees
+                          </Label>
+                        </div>
+                      ))}
+                    </CollapsibleContent>
+                  </Collapsible>
+                </div>
               </div>
+            </aside>
+          )}
 
-              <div className="space-y-6">
-                <Collapsible defaultOpen>
-                  <CollapsibleTrigger asChild>
-                    <Button
-                      variant="ghost"
-                      className="w-full justify-between p-0 h-auto font-semibold hover:no-underline"
-                      data-testid="button-toggle-verticals"
-                    >
-                      Vertical Market
-                      <ChevronDown className="w-4 h-4" />
-                    </Button>
-                  </CollapsibleTrigger>
-                  <CollapsibleContent className="mt-4 space-y-3">
-                    {VERTICALS.map(vertical => (
-                      <div key={vertical} className="flex items-center space-x-2">
-                        <Checkbox
-                          id={`vertical-${vertical}`}
-                          checked={filters.verticals.includes(vertical)}
-                          onCheckedChange={() => toggleFilter("verticals", vertical)}
-                          data-testid={`checkbox-vertical-${vertical.toLowerCase().replace(/\s+/g, '-')}`}
-                        />
-                        <Label htmlFor={`vertical-${vertical}`} className="cursor-pointer">
-                          {vertical}
-                        </Label>
-                      </div>
-                    ))}
-                  </CollapsibleContent>
-                </Collapsible>
-
-                <Separator />
-
-                <Collapsible defaultOpen>
-                  <CollapsibleTrigger asChild>
-                    <Button
-                      variant="ghost"
-                      className="w-full justify-between p-0 h-auto font-semibold hover:no-underline"
-                      data-testid="button-toggle-categories"
-                    >
-                      Category
-                      <ChevronDown className="w-4 h-4" />
-                    </Button>
-                  </CollapsibleTrigger>
-                  <CollapsibleContent className="mt-4 space-y-3">
-                    {CATEGORIES.map(category => (
-                      <div key={category} className="flex items-center space-x-2">
-                        <Checkbox
-                          id={`category-${category}`}
-                          checked={filters.categories.includes(category)}
-                          onCheckedChange={() => toggleFilter("categories", category)}
-                          data-testid={`checkbox-category-${category.toLowerCase().replace(/\s+/g, '-')}`}
-                        />
-                        <Label htmlFor={`category-${category}`} className="cursor-pointer">
-                          {category}
-                        </Label>
-                      </div>
-                    ))}
-                  </CollapsibleContent>
-                </Collapsible>
-
-                <Separator />
-
-                <Collapsible defaultOpen>
-                  <CollapsibleTrigger asChild>
-                    <Button
-                      variant="ghost"
-                      className="w-full justify-between p-0 h-auto font-semibold hover:no-underline"
-                      data-testid="button-toggle-regions"
-                    >
-                      Region
-                      <ChevronDown className="w-4 h-4" />
-                    </Button>
-                  </CollapsibleTrigger>
-                  <CollapsibleContent className="mt-4 space-y-3">
-                    {REGIONS.map(region => (
-                      <div key={region} className="flex items-center space-x-2">
-                        <Checkbox
-                          id={`region-${region}`}
-                          checked={filters.regions.includes(region)}
-                          onCheckedChange={() => toggleFilter("regions", region)}
-                          data-testid={`checkbox-region-${region.toLowerCase().replace(/\s+/g, '-')}`}
-                        />
-                        <Label htmlFor={`region-${region}`} className="cursor-pointer">
-                          {region}
-                        </Label>
-                      </div>
-                    ))}
-                  </CollapsibleContent>
-                </Collapsible>
-
-                <Separator />
-
-                <Collapsible defaultOpen>
-                  <CollapsibleTrigger asChild>
-                    <Button
-                      variant="ghost"
-                      className="w-full justify-between p-0 h-auto font-semibold hover:no-underline"
-                      data-testid="button-toggle-teamsize"
-                    >
-                      Team Size
-                      <ChevronDown className="w-4 h-4" />
-                    </Button>
-                  </CollapsibleTrigger>
-                  <CollapsibleContent className="mt-4 space-y-3">
-                    {TEAM_SIZES.map(size => (
-                      <div key={size} className="flex items-center space-x-2">
-                        <Checkbox
-                          id={`teamsize-${size}`}
-                          checked={filters.teamSizes.includes(size)}
-                          onCheckedChange={() => toggleFilter("teamSizes", size)}
-                          data-testid={`checkbox-teamsize-${size.toLowerCase().replace(/\+/g, 'plus').replace(/-/g, '-')}`}
-                        />
-                        <Label htmlFor={`teamsize-${size}`} className="cursor-pointer">
-                          {size} employees
-                        </Label>
-                      </div>
-                    ))}
-                  </CollapsibleContent>
-                </Collapsible>
-              </div>
-            </div>
-          </aside>
-
-          <div className="flex-1">
-            <div className="space-y-6">
+          <div className="flex-1 min-w-0">
+            <div className="space-y-3">
               {csiGroups.map(group => {
                 const isCollapsed = collapsedDivisions.has(group.divisionId);
                 const primarySolutions = group.solutions.slice(0, 2);
@@ -400,21 +410,21 @@ export default function Solutions() {
 
                 return (
                   <Card key={group.divisionId} data-testid={`division-${group.divisionId}`}>
-                    <CardHeader className="pb-4">
+                    <CardHeader className="pb-3 pt-3">
                       <button
                         onClick={() => toggleDivision(group.divisionId)}
                         className="flex items-center justify-between w-full text-left hover-elevate active-elevate-2 rounded-md p-2 -m-2"
                         aria-expanded={!isCollapsed}
                         data-testid={`button-toggle-division-${group.divisionId}`}
                       >
-                        <div className="flex items-center gap-3">
+                        <div className="flex items-center gap-2">
                           {isCollapsed ? (
-                            <ChevronRight className="w-5 h-5 text-muted-foreground flex-shrink-0" />
+                            <ChevronRight className="w-4 h-4 text-muted-foreground flex-shrink-0" />
                           ) : (
-                            <ChevronDown className="w-5 h-5 text-muted-foreground flex-shrink-0" />
+                            <ChevronDown className="w-4 h-4 text-muted-foreground flex-shrink-0" />
                           )}
-                          <h3 className="font-display text-lg font-semibold">{group.divisionLabel}</h3>
-                          <Badge variant="secondary" data-testid={`badge-division-count-${group.divisionId}`}>
+                          <h3 className="font-display text-base font-semibold">{group.divisionLabel}</h3>
+                          <Badge variant="secondary" className="text-xs" data-testid={`badge-division-count-${group.divisionId}`}>
                             {group.solutions.length}
                           </Badge>
                         </div>
@@ -422,12 +432,12 @@ export default function Solutions() {
                     </CardHeader>
 
                     {!isCollapsed && (
-                      <CardContent className="pt-0">
-                        <div className="flex gap-6">
+                      <CardContent className="pt-0 pb-3">
+                        <div className="flex gap-3">
                           {/* Primary Solutions (Left Column) */}
-                          <div className="space-y-4 flex-shrink-0" style={{ width: '320px' }}>
+                          <div className="space-y-3 flex-shrink-0" style={{ width: '280px' }}>
                             {primarySolutions.map(solution => (
-                              <SolutionCard key={solution.id} solution={solution} isPrimary />
+                              <SolutionCard key={solution.id} solution={solution} />
                             ))}
                           </div>
 
@@ -435,9 +445,9 @@ export default function Solutions() {
                           {secondarySolutions.length > 0 && (
                             <div className="flex-1 min-w-0">
                               <ScrollArea className="w-full">
-                                <div className="flex gap-4 pb-4">
+                                <div className="flex gap-3 pb-2">
                                   {secondarySolutions.map(solution => (
-                                    <div key={solution.id} className="flex-shrink-0" style={{ width: '320px' }}>
+                                    <div key={solution.id} className="flex-shrink-0" style={{ width: '280px' }}>
                                       <SolutionCard solution={solution} />
                                     </div>
                                   ))}
@@ -455,12 +465,13 @@ export default function Solutions() {
 
               {csiGroups.length === 0 && (
                 <Card>
-                  <CardContent className="py-12 text-center">
-                    <p className="text-muted-foreground">No solutions found matching your filters.</p>
+                  <CardContent className="py-8 text-center">
+                    <p className="text-sm text-muted-foreground">No solutions found matching your filters.</p>
                     {activeFilterCount > 0 && (
                       <Button
                         variant="outline"
-                        className="mt-4"
+                        size="sm"
+                        className="mt-3"
                         onClick={clearFilters}
                         data-testid="button-clear-filters-empty"
                       >
@@ -478,7 +489,7 @@ export default function Solutions() {
   );
 }
 
-function SolutionCard({ solution, isPrimary = false }: { solution: SolutionWithScore; isPrimary?: boolean }) {
+function SolutionCard({ solution }: { solution: SolutionWithScore }) {
   const [, setLocation] = useLocation();
 
   return (
@@ -487,31 +498,31 @@ function SolutionCard({ solution, isPrimary = false }: { solution: SolutionWithS
       onClick={() => setLocation(`/solution/${solution.id}`)}
       data-testid={`card-solution-${solution.id}`}
     >
-      <CardContent className="p-6">
-        <div className="flex items-start gap-4">
+      <CardContent className="p-3">
+        <div className="flex items-start gap-2">
           <div
-            className="w-12 h-12 rounded-md flex items-center justify-center text-xl font-bold bg-primary/10 text-primary flex-shrink-0"
+            className="w-9 h-9 rounded flex items-center justify-center text-sm font-bold bg-primary/10 text-primary flex-shrink-0"
             data-testid={`logo-${solution.id}`}
           >
             {solution.name.charAt(0)}
           </div>
           <div className="flex-1 min-w-0">
-            <h4 className="font-semibold text-base mb-1 truncate" data-testid={`text-solution-name-${solution.id}`}>
+            <h4 className="font-semibold text-sm mb-1 truncate" data-testid={`text-solution-name-${solution.id}`}>
               {solution.name}
             </h4>
-            <p className="text-sm text-muted-foreground mb-3 line-clamp-2" data-testid={`text-solution-tagline-${solution.id}`}>
+            <p className="text-xs text-muted-foreground mb-2 line-clamp-2" data-testid={`text-solution-tagline-${solution.id}`}>
               {solution.tagline}
             </p>
-            <div className="flex flex-wrap gap-1">
-              {solution.categories.slice(0, 3).map(category => (
-                <Badge key={category} variant="secondary" className="text-xs">
+            <div className="flex flex-wrap gap-1 mb-2">
+              {solution.categories.slice(0, 2).map(category => (
+                <Badge key={category} variant="secondary" className="text-xs px-1.5 py-0">
                   {category}
                 </Badge>
               ))}
             </div>
-            <div className="mt-3 flex items-center gap-4 text-xs text-muted-foreground">
-              <span data-testid={`text-location-${solution.id}`}>{solution.location}</span>
-              <span data-testid={`text-teamsize-${solution.id}`}>{solution.teamSize} team</span>
+            <div className="flex items-center gap-3 text-xs text-muted-foreground">
+              <span className="truncate" data-testid={`text-location-${solution.id}`}>{solution.location}</span>
+              <span className="truncate" data-testid={`text-teamsize-${solution.id}`}>{solution.teamSize}</span>
             </div>
           </div>
         </div>
