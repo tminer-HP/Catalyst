@@ -11,6 +11,7 @@ import { Separator } from "@/components/ui/separator";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { CATEGORIES, REGIONS, VERTICALS, type Solution } from "@shared/solutions";
 import { mockSolutions, mockProjects } from "@shared/mockData";
+import { aiSearchSolutions } from "@/utils/aiSearch";
 import {
   Collapsible,
   CollapsibleContent,
@@ -44,6 +45,8 @@ export default function Solutions() {
     regions: [],
     teamSizes: [],
   });
+  
+  const [aiQuery, setAiQuery] = useState<string | null>(null);
 
   useEffect(() => {
     const searchParams = new URLSearchParams(search);
@@ -76,6 +79,9 @@ export default function Solutions() {
 
     const queryParam = searchParams.get("q");
     if (queryParam) {
+      setAiQuery(queryParam);
+    } else {
+      setAiQuery(null);
     }
 
     setFilters(newFilters);
@@ -100,7 +106,11 @@ export default function Solutions() {
     });
   };
 
-  const filteredSolutions = mockSolutions.filter(solution => {
+  const baseSolutions = aiQuery 
+    ? aiSearchSolutions(aiQuery, mockSolutions)
+    : mockSolutions;
+
+  const filteredSolutions = baseSolutions.filter(solution => {
     if (filters.verticals.length > 0) {
       const hasVertical = filters.verticals.some(v => solution.verticals.includes(v));
       if (!hasVertical) return false;
@@ -119,12 +129,27 @@ export default function Solutions() {
     if (filters.teamSizes.length > 0) {
       const hasTeamSize = filters.teamSizes.some(ts => {
         const teamSize = solution.teamSize;
-        if (ts === "1-10" && (teamSize.includes("1-") || teamSize.includes("5-") || teamSize === "1-10")) return true;
-        if (ts === "11-50" && (teamSize.includes("15-") || teamSize.includes("20-") || teamSize.includes("25-") || teamSize.includes("30-") || teamSize === "11-50")) return true;
-        if (ts === "51-200" && (teamSize.includes("50-") || teamSize.includes("100-") || teamSize === "51-200")) return true;
-        if (ts === "201-500" && (teamSize.includes("200-") || teamSize.includes("500-") || teamSize === "201-500")) return true;
-        if (ts === "500+" && teamSize.includes("1000+")) return true;
-        return false;
+        const parseRange = (range: string): { min: number; max: number | null } => {
+          if (range.includes("+")) {
+            const min = parseInt(range.replace("+", ""));
+            return { min, max: null };
+          }
+          const parts = range.split("-").map(p => parseInt(p));
+          return { min: parts[0], max: parts[1] };
+        };
+        
+        const filterRange = parseRange(ts);
+        const solutionRange = parseRange(teamSize);
+        
+        if (filterRange.max === null) {
+          return solutionRange.min >= filterRange.min;
+        }
+        
+        return (
+          (solutionRange.min >= filterRange.min && solutionRange.min <= filterRange.max) ||
+          (solutionRange.max !== null && solutionRange.max >= filterRange.min && solutionRange.max <= filterRange.max) ||
+          (solutionRange.min <= filterRange.min && (solutionRange.max === null || solutionRange.max >= filterRange.max))
+        );
       });
       if (!hasTeamSize) return false;
     }
