@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
+import { SidebarTrigger } from "@/components/ui/sidebar";
 import { mockProjects, mockSolutions } from "@shared/mockData";
 
 export default function ProjectExplorer() {
@@ -58,6 +59,7 @@ export default function ProjectExplorer() {
         <div className="max-w-7xl mx-auto px-6 lg:px-8 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
+              <SidebarTrigger data-testid="button-sidebar-toggle" />
               <Button
                 variant="ghost"
                 size="icon"

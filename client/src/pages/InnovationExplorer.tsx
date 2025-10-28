@@ -5,6 +5,7 @@ import { useSearchHistory } from "@/hooks/useSearchHistory";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { SidebarTrigger } from "@/components/ui/sidebar";
 import { CATEGORIES } from "@shared/solutions";
 import { mockSolutions } from "@shared/mockData";
 
@@ -58,6 +59,7 @@ export default function InnovationExplorer() {
         <div className="max-w-7xl mx-auto px-6 lg:px-8 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
+              <SidebarTrigger data-testid="button-sidebar-toggle" />
               <Button
                 variant="ghost"
                 size="icon"

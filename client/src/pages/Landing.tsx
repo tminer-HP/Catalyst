@@ -3,7 +3,7 @@ import { useLocation } from "wouter";
 import { Building2, FolderKanban, Lightbulb, Sparkles, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import SearchHistory from "@/components/SearchHistory";
+import { SidebarTrigger } from "@/components/ui/sidebar";
 
 export default function Landing() {
   const [, setLocation] = useLocation();
@@ -44,88 +44,88 @@ export default function Landing() {
   ];
 
   return (
-    <div className="h-screen flex bg-background">
-      <SearchHistory />
+    <div className="flex flex-col h-screen bg-background">
+      <header className="border-b p-4">
+        <SidebarTrigger data-testid="button-sidebar-toggle" />
+      </header>
 
-      <div className="flex-1 flex flex-col overflow-hidden">
-        <main className="flex-1 overflow-y-auto">
-          <div className="max-w-5xl mx-auto px-8 py-16 space-y-12">
-            <div className="space-y-6">
-              <h2 className="font-display text-6xl font-bold text-foreground">
-                Discover. Compare. Connect.
-              </h2>
-              <p className="text-xl text-muted-foreground">
-                Choose your path to discover construction innovations
-              </p>
-            </div>
+      <main className="flex-1 overflow-y-auto">
+        <div className="max-w-5xl mx-auto px-8 py-16 space-y-12">
+          <div className="space-y-6">
+            <h2 className="font-display text-6xl font-bold text-foreground">
+              Discover. Compare. Connect.
+            </h2>
+            <p className="text-xl text-muted-foreground">
+              Choose your path to discover construction innovations
+            </p>
+          </div>
 
-            <div className="space-y-8">
-              <div>
-                <div className="mb-4 flex items-center gap-3">
-                  <Sparkles className="w-6 h-6 text-foreground" />
-                  <h3 className="font-display text-xl font-semibold text-foreground">AI-Powered Discovery</h3>
+          <div className="space-y-8">
+            <div>
+              <div className="mb-4 flex items-center gap-3">
+                <Sparkles className="w-6 h-6 text-foreground" />
+                <h3 className="font-display text-xl font-semibold text-foreground">AI-Powered Discovery</h3>
+              </div>
+              <form onSubmit={handlePromptSubmit}>
+                <div className="relative">
+                  <Input
+                    type="text"
+                    value={aiPrompt}
+                    onChange={(e) => setAiPrompt(e.target.value)}
+                    placeholder="Ask anything... e.g., Show me layout robotics for datacenter projects"
+                    className="h-14 text-base pr-32 border-2"
+                    data-testid="input-ai-prompt"
+                  />
+                  <Button
+                    type="submit"
+                    disabled={!aiPrompt.trim()}
+                    variant="default"
+                    className="absolute right-2 top-2 h-10"
+                    data-testid="button-submit-prompt"
+                  >
+                    Generate View
+                  </Button>
                 </div>
-                <form onSubmit={handlePromptSubmit}>
-                  <div className="relative">
-                    <Input
-                      type="text"
-                      value={aiPrompt}
-                      onChange={(e) => setAiPrompt(e.target.value)}
-                      placeholder="Ask anything... e.g., Show me layout robotics for datacenter projects"
-                      className="h-14 text-base pr-32 border-2"
-                      data-testid="input-ai-prompt"
-                    />
-                    <Button
-                      type="submit"
-                      disabled={!aiPrompt.trim()}
-                      variant="default"
-                      className="absolute right-2 top-2 h-10"
-                      data-testid="button-submit-prompt"
-                    >
-                      Generate View
-                    </Button>
-                  </div>
-                </form>
-              </div>
+              </form>
+            </div>
 
-              <div className="grid grid-cols-3 gap-6">
-                {discoveryPaths.map((path) => {
-                  const Icon = path.icon;
-                  return (
-                    <button
-                      key={path.id}
-                      onClick={() => setLocation(path.path)}
-                      className="group text-left p-8 border-2 rounded-lg hover-elevate active-elevate-2 transition-all"
-                      data-testid={path.testId}
-                    >
-                      <div className="flex items-start justify-between gap-4 mb-4">
-                        <h3 className="font-display text-xl font-bold text-foreground flex-1">
-                          {path.title}
-                        </h3>
-                        <Icon className="w-8 h-8 text-foreground flex-shrink-0" />
-                      </div>
-                      
-                      <p className="text-sm text-muted-foreground leading-relaxed mb-4">
-                        {path.description}
-                      </p>
+            <div className="grid grid-cols-3 gap-6">
+              {discoveryPaths.map((path) => {
+                const Icon = path.icon;
+                return (
+                  <button
+                    key={path.id}
+                    onClick={() => setLocation(path.path)}
+                    className="group text-left p-8 border-2 rounded-lg hover-elevate active-elevate-2 transition-all"
+                    data-testid={path.testId}
+                  >
+                    <div className="flex items-start justify-between gap-4 mb-4">
+                      <h3 className="font-display text-xl font-bold text-foreground flex-1">
+                        {path.title}
+                      </h3>
+                      <Icon className="w-8 h-8 text-foreground flex-shrink-0" />
+                    </div>
+                    
+                    <p className="text-sm text-muted-foreground leading-relaxed mb-4">
+                      {path.description}
+                    </p>
 
-                      <div className="flex items-center text-sm font-semibold text-foreground group-hover:translate-x-1 transition-transform">
-                        Explore <ArrowRight className="w-4 h-4 ml-1" />
-                      </div>
-                    </button>
-                  );
-                })}
-              </div>
+                    <div className="flex items-center text-sm font-semibold text-foreground group-hover:translate-x-1 transition-transform">
+                      Explore <ArrowRight className="w-4 h-4 ml-1" />
+                    </div>
+                  </button>
+                );
+              })}
             </div>
           </div>
-        </main>
+        </div>
+      </main>
 
-        <footer className="border-t py-4 bg-background">
-          <div className="px-8 text-center text-sm text-muted-foreground">
-            <p>© 2025 Catalyst. Building smarter starts here.</p>
-          </div>
-        </footer>
-      </div>
+      <footer className="border-t py-4 bg-background">
+        <div className="px-8 text-center text-sm text-muted-foreground">
+          <p>© 2025 Catalyst. Building smarter starts here.</p>
+        </div>
+      </footer>
     </div>
   );
 }
