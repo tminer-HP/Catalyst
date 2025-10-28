@@ -7,6 +7,7 @@ import { SidebarProvider } from "@/components/ui/sidebar";
 import SearchHistory from "@/components/SearchHistory";
 import Landing from "@/pages/Landing";
 import Dashboard from "@/pages/Dashboard";
+import Solutions from "@/pages/Solutions";
 import SolutionDetail from "@/pages/SolutionDetail";
 import VerticalMarket from "@/pages/VerticalMarket";
 import ProjectExplorer from "@/pages/ProjectExplorer";
@@ -19,6 +20,7 @@ function Router() {
     <Switch>
       <Route path="/" component={Landing} />
       <Route path="/dashboard" component={Dashboard} />
+      <Route path="/solutions" component={Solutions} />
       <Route path="/vertical-market" component={VerticalMarket} />
       <Route path="/project-explorer" component={ProjectExplorer} />
       <Route path="/innovation-explorer" component={InnovationExplorer} />

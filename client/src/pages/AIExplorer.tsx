@@ -146,13 +146,22 @@ export default function AIExplorer() {
                   Found {results.length} {results.length === 1 ? 'solution' : 'solutions'}
                 </p>
               </div>
-              <Button
-                variant="outline"
-                onClick={handleNewPrompt}
-                data-testid="button-new-search"
-              >
-                New Search
-              </Button>
+              <div className="flex gap-2">
+                <Button
+                  variant="default"
+                  onClick={() => setLocation(`/solutions?q=${encodeURIComponent(displayQuery)}`)}
+                  data-testid="button-view-solutions"
+                >
+                  View in Solutions
+                </Button>
+                <Button
+                  variant="outline"
+                  onClick={handleNewPrompt}
+                  data-testid="button-new-search"
+                >
+                  New Search
+                </Button>
+              </div>
             </div>
 
             {results.length > 0 ? (

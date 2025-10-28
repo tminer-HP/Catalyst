@@ -94,7 +94,7 @@ export default function InnovationExplorer() {
                   <Card
                     key={category}
                     className="p-6 cursor-pointer hover-elevate active-elevate-2 transition-all"
-                    onClick={() => setLocation(`/innovation-explorer?c=${category}`)}
+                    onClick={() => setLocation(`/solutions?c=${category}`)}
                     data-testid={`card-category-${category.toLowerCase()}`}
                   >
                     <div className="flex items-start gap-4">

@@ -102,7 +102,7 @@ export default function ProjectExplorer() {
                 <Card
                   key={project.id}
                   className="p-6 cursor-pointer hover-elevate active-elevate-2 transition-all"
-                  onClick={() => setLocation(`/project-explorer?p=${project.id}`)}
+                  onClick={() => setLocation(`/solutions?p=${project.id}`)}
                   data-testid={`card-project-${project.id}`}
                 >
                   <div className="flex items-start justify-between mb-4">

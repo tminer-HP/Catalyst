@@ -102,7 +102,7 @@ export default function VerticalMarket() {
                   <Card
                     key={vertical}
                     className="p-6 cursor-pointer hover-elevate active-elevate-2 transition-all"
-                    onClick={() => setLocation(`/vertical-market?v=${vertical}`)}
+                    onClick={() => setLocation(`/solutions?v=${vertical}`)}
                     data-testid={`card-vertical-${vertical.toLowerCase()}`}
                   >
                     <div className="flex items-start gap-4">
