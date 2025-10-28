@@ -31,7 +31,14 @@ Preferred communication style: Simple, everyday language.
 
 **Component Architecture:**
 - Reusable UI components following atomic design patterns
-- Page-level components for major views (Landing, Dashboard, SolutionDetail, etc.)
+- Page-level components for major views:
+  - `Landing.tsx` - Multi-path discovery entry point with 4 navigation cards
+  - `VerticalMarket.tsx` - Industry vertical browsing and drill-down
+  - `ProjectExplorer.tsx` - Project search and solution mapping
+  - `InnovationExplorer.tsx` - Category-based solution discovery
+  - `AIExplorer.tsx` - Natural language search interface
+  - `Dashboard.tsx` - Legacy dashboard with sidebar filters (still accessible)
+  - `SolutionDetail.tsx` - Individual solution detail pages
 - Shared components for common patterns (NavHeader, SolutionCard, FilterSidebar)
 - Example components demonstrating usage patterns
 
@@ -112,10 +119,30 @@ Preferred communication style: Simple, everyday language.
 - Real-time filter updates with URL state preservation
 
 **Discovery Pathways:**
-1. Vertical Market Explorer - Browse by industry vertical
-2. Project Explorer - View solutions by active projects
-3. Innovation Explorer - Browse by technology category
-4. AI Explorer - Natural language search interface
+
+The application features a multi-path navigation landing page with 4 distinct discovery methods:
+
+1. **Vertical Market** (`/vertical-market`) - Browse by industry verticals
+   - Select from verticals: Datacenter, Hospital, Airport, Commercial, Industrial
+   - Drill down to see active projects and available solutions for each vertical
+   - View project metadata and which solutions are deployed on each project
+
+2. **Project Explorer** (`/project-explorer`) - Browse by active construction projects
+   - Search projects by name, code, or vertical
+   - View project details including location, value, status, and vertical
+   - See all solutions currently being used on each project
+   - 6 mock projects across different verticals
+
+3. **Innovation Explorer** (`/innovation-explorer`) - Browse by technology categories
+   - Browse by categories: Robotics, Safety, AI, Layout, Estimating, Productivity, Scheduling
+   - Filter solutions by innovation category
+   - View solutions with category tags and vertical applicability
+
+4. **AI Explorer** (`/ai-explore`) - Natural language search interface
+   - Enter queries in plain language (e.g., "layout robotics for hospitals")
+   - AI-powered relevance scoring based on keywords, categories, and verticals
+   - Query parameters preserved in URL for shareability
+   - Suggestion prompts to guide user queries
 
 ## External Dependencies
 
