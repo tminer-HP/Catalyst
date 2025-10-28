@@ -41,7 +41,7 @@ export default function SolutionDetail() {
     );
   }
 
-  const logoSrc = solution.logo.replace("@assets/", "/attached_assets/");
+  const logoUrl = `https://logo.clearbit.com/${solution.website}`;
   const relatedSolutions = mockSolutions.filter((s) =>
     solution.relatedIds.includes(s.id)
   );
@@ -67,10 +67,10 @@ export default function SolutionDetail() {
           <div className="lg:col-span-2 space-y-8">
             <div>
               <div className="flex items-center gap-6 mb-6">
-                <div className="flex items-center justify-center h-24 md:h-32 w-24 md:w-32 flex-shrink-0 rounded bg-primary/10">
+                <div className="flex items-center justify-center h-24 md:h-32 w-24 md:w-32 flex-shrink-0 rounded bg-primary/10 overflow-hidden">
                   {!logoError ? (
                     <img
-                      src={logoSrc}
+                      src={logoUrl}
                       alt={`${solution.name} logo`}
                       className="max-h-full max-w-full object-contain p-2"
                       data-testid="img-solution-logo"
@@ -177,30 +177,52 @@ export default function SolutionDetail() {
           <div className="mt-12">
             <h2 className="text-2xl font-semibold mb-6">Related Technologies</h2>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              {relatedSolutions.map((related) => {
-                const relatedLogoSrc = related.logo.replace("@assets/", "/attached_assets/");
-                return (
-                  <Card
-                    key={related.id}
-                    className="p-4 text-center cursor-pointer hover:-translate-y-1 transition-all duration-200 overflow-visible hover-elevate active-elevate-2"
-                    onClick={() => setLocation(`/solution/${related.id}`)}
-                    data-testid={`card-related-${related.id}`}
-                  >
-                    <div className="flex items-center justify-center h-12 mb-3">
-                      <img
-                        src={relatedLogoSrc}
-                        alt={`${related.name} logo`}
-                        className="max-h-12 max-w-full object-contain"
-                      />
-                    </div>
-                    <p className="text-sm font-medium">{related.name}</p>
-                  </Card>
-                );
-              })}
+              {relatedSolutions.map((related) => (
+                <RelatedSolutionCard
+                  key={related.id}
+                  solution={related}
+                  onClick={() => setLocation(`/solution/${related.id}`)}
+                />
+              ))}
             </div>
           </div>
         )}
       </div>
     </div>
+  );
+}
+
+function RelatedSolutionCard({ 
+  solution, 
+  onClick 
+}: { 
+  solution: Solution;
+  onClick: () => void;
+}) {
+  const [logoError, setLogoError] = useState(false);
+  const logoUrl = `https://logo.clearbit.com/${solution.website}`;
+
+  return (
+    <Card
+      className="p-4 text-center cursor-pointer hover:-translate-y-1 transition-all duration-200 overflow-visible hover-elevate active-elevate-2"
+      onClick={onClick}
+      data-testid={`card-related-${solution.id}`}
+    >
+      <div className="flex items-center justify-center h-12 mb-3 overflow-hidden">
+        {!logoError ? (
+          <img
+            src={logoUrl}
+            alt={`${solution.name} logo`}
+            className="max-h-12 max-w-full object-contain"
+            onError={() => setLogoError(true)}
+          />
+        ) : (
+          <div className="h-12 w-12 rounded flex items-center justify-center bg-primary/10 text-primary font-bold text-lg">
+            {solution.name.charAt(0)}
+          </div>
+        )}
+      </div>
+      <p className="text-sm font-medium">{solution.name}</p>
+    </Card>
   );
 }

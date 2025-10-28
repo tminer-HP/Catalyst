@@ -502,6 +502,7 @@ function SolutionCard({
   onToggleSelect: (id: string) => void;
 }) {
   const [, setLocation] = useLocation();
+  const [logoError, setLogoError] = useState(false);
 
   const handleCardClick = (e: React.MouseEvent) => {
     if ((e.target as HTMLElement).closest('[data-checkbox]')) {
@@ -509,6 +510,8 @@ function SolutionCard({
     }
     setLocation(`/solution/${solution.id}`);
   };
+
+  const logoUrl = `https://logo.clearbit.com/${solution.website}`;
 
   return (
     <Card
@@ -531,10 +534,19 @@ function SolutionCard({
               />
             </div>
             <div
-              className="w-9 h-9 rounded flex items-center justify-center text-sm font-bold bg-primary/10 text-primary flex-shrink-0"
+              className="w-9 h-9 rounded flex items-center justify-center text-sm font-bold bg-primary/10 text-primary flex-shrink-0 overflow-hidden"
               data-testid={`logo-${solution.id}`}
             >
-              {solution.name.charAt(0)}
+              {!logoError ? (
+                <img
+                  src={logoUrl}
+                  alt={`${solution.name} logo`}
+                  className="w-full h-full object-contain p-1"
+                  onError={() => setLogoError(true)}
+                />
+              ) : (
+                <span>{solution.name.charAt(0)}</span>
+              )}
             </div>
             <div className="flex-1 min-w-0">
               <h4 className="font-semibold text-sm mb-1 truncate" data-testid={`text-solution-name-${solution.id}`}>
