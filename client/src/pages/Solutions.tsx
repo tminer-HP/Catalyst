@@ -420,8 +420,6 @@ export default function Solutions() {
             <div className="space-y-3">
               {csiGroups.map(group => {
                 const isCollapsed = collapsedDivisions.has(group.divisionId);
-                const primarySolutions = group.solutions.slice(0, 2);
-                const secondarySolutions = group.solutions.slice(2);
 
                 return (
                   <Card key={group.divisionId} data-testid={`division-${group.divisionId}`}>
@@ -448,39 +446,20 @@ export default function Solutions() {
 
                     {!isCollapsed && (
                       <CardContent className="pt-0 pb-3">
-                        <div className="flex gap-3">
-                          {/* Primary Solutions (Left Column) */}
-                          <div className="space-y-3 flex-shrink-0" style={{ width: '280px' }}>
-                            {primarySolutions.map(solution => (
-                              <SolutionCard 
-                                key={solution.id} 
-                                solution={solution} 
-                                isSelected={isSelected(solution.id)}
-                                onToggleSelect={toggleSolution}
-                              />
+                        <ScrollArea className="w-full">
+                          <div className="flex gap-3 pb-2">
+                            {group.solutions.map(solution => (
+                              <div key={solution.id} className="flex-shrink-0" style={{ width: '280px' }}>
+                                <SolutionCard 
+                                  solution={solution} 
+                                  isSelected={isSelected(solution.id)}
+                                  onToggleSelect={toggleSolution}
+                                />
+                              </div>
                             ))}
                           </div>
-
-                          {/* Secondary Solutions (Horizontal Scroll) */}
-                          {secondarySolutions.length > 0 && (
-                            <div className="flex-1 min-w-0">
-                              <ScrollArea className="w-full">
-                                <div className="flex gap-3 pb-2">
-                                  {secondarySolutions.map(solution => (
-                                    <div key={solution.id} className="flex-shrink-0" style={{ width: '280px' }}>
-                                      <SolutionCard 
-                                        solution={solution} 
-                                        isSelected={isSelected(solution.id)}
-                                        onToggleSelect={toggleSolution}
-                                      />
-                                    </div>
-                                  ))}
-                                </div>
-                                <ScrollBar orientation="horizontal" />
-                              </ScrollArea>
-                            </div>
-                          )}
-                        </div>
+                          <ScrollBar orientation="horizontal" />
+                        </ScrollArea>
                       </CardContent>
                     )}
                   </Card>
