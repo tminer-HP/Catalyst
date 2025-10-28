@@ -3,6 +3,7 @@ import { useLocation } from "wouter";
 import { Building2, FolderKanban, Lightbulb, Sparkles, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import logoUrl from "@assets/image_1761678131803.png";
 
 export default function Landing() {
   const [, setLocation] = useLocation();
@@ -46,9 +47,8 @@ export default function Landing() {
     <div className="h-screen flex flex-col bg-background">
       <header className="border-b">
         <div className="max-w-7xl mx-auto px-8 py-6">
-          <div>
-            <h1 className="font-display text-2xl font-bold text-foreground">Diverge Connect</h1>
-            <p className="text-sm text-muted-foreground">The Innovation Discovery Engine</p>
+          <div className="flex items-center gap-4">
+            <img src={logoUrl} alt="Catalyst Logo" className="h-16" />
           </div>
         </div>
       </header>
