@@ -1,4 +1,4 @@
-# Diverge Connect: Innovation Discovery Engine - Design Guidelines
+# Catalyst: Innovation Discovery Engine - Design Guidelines
 
 ## Design Approach
 
@@ -202,4 +202,4 @@
 
 ---
 
-This design creates a professional, modern discovery platform that positions Diverge Connect as a credible industry resource while maintaining clarity and ease of navigation for the prototype demonstration.
+This design creates a professional, modern discovery platform that positions Catalyst as a credible industry resource while maintaining clarity and ease of navigation for the prototype demonstration.

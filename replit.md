@@ -1,8 +1,8 @@
-# Diverge Connect: Innovation Discovery Engine
+# Catalyst: Innovation Discovery Engine
 
 ## Overview
 
-Diverge Connect is a construction technology discovery platform that serves as a comprehensive directory and search engine for AEC (Architecture, Engineering, Construction) innovation solutions. The platform enables users to discover, compare, and connect with construction technology providers across multiple categories including robotics, AI, safety, sustainability, and productivity tools.
+Catalyst is a construction technology discovery platform that serves as a comprehensive directory and search engine for AEC (Architecture, Engineering, Construction) innovation solutions. The platform enables users to discover, compare, and connect with construction technology providers across multiple categories including robotics, AI, safety, sustainability, and productivity tools.
 
 The application provides multiple discovery pathways: browsing by vertical markets (datacenters, hospitals, airports), exploring specific projects, searching by innovation categories, and AI-powered natural language search. It's designed as a sophisticated B2B SaaS platform with enterprise aesthetics inspired by ProductHunt, Linear, and Clutch.
 

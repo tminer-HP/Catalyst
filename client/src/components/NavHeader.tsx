@@ -15,10 +15,10 @@ export default function NavHeader({ showSearch = false, children }: NavHeaderPro
           <Link href="/" data-testid="link-home">
             <div className="flex items-center gap-2 cursor-pointer">
               <div className="h-8 w-8 rounded-md bg-primary flex items-center justify-center">
-                <span className="text-primary-foreground font-bold text-lg">D</span>
+                <span className="text-primary-foreground font-bold text-lg">C</span>
               </div>
               <span className="font-display font-bold text-xl hidden sm:inline">
-                Diverge Connect
+                Catalyst
               </span>
             </div>
           </Link>
