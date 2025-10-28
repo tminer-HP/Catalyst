@@ -10,6 +10,16 @@ The application provides multiple discovery pathways: browsing by vertical marke
 
 ### October 28, 2025
 
+- **SolutionDetail Page Improvements**: Fixed navigation and logo display issues
+  - **Navigation Fix**: "Back" button now uses browser history (`window.history.back()`) instead of hardcoded `/dashboard` path
+  - Properly returns to previous page (Solutions, Project Explorer, etc.) instead of always going to Dashboard
+  - Fallback to `/solutions` if no browser history exists
+  - **Logo Display Fix**: Company logos now display correctly with robust error handling
+  - Logos load from `attached_assets/generated_images/` with proper path transformation
+  - Fallback to styled first-letter icon if logo fails to load
+  - Logo error state resets when navigating between solutions (no stuck fallback state)
+  - Added HelpMenu to SolutionDetail page header
+
 - **Checkout/Selection System**: Complete solution selection and checkout workflow
   - Users can select multiple solutions from the Solutions page via checkboxes
   - "View Selections" button appears in header showing selection count

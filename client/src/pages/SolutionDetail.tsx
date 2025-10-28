@@ -4,13 +4,28 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import NavHeader from "@/components/NavHeader";
+import HelpMenu from "@/components/HelpMenu";
 import { mockSolutions } from "@shared/mockData";
+import { useState, useEffect } from "react";
 
 export default function SolutionDetail() {
   const [, params] = useRoute("/solution/:id");
   const [, setLocation] = useLocation();
+  const [logoError, setLogoError] = useState(false);
   
   const solution = mockSolutions.find((s) => s.id === params?.id);
+
+  useEffect(() => {
+    setLogoError(false);
+  }, [params?.id]);
+
+  const handleBack = () => {
+    if (window.history.length > 1) {
+      window.history.back();
+    } else {
+      setLocation("/solutions");
+    }
+  };
 
   if (!solution) {
     return (
@@ -18,8 +33,8 @@ export default function SolutionDetail() {
         <NavHeader />
         <div className="max-w-4xl mx-auto px-6 lg:px-8 py-12 text-center">
           <h1 className="text-2xl font-bold mb-4">Solution not found</h1>
-          <Button onClick={() => setLocation("/dashboard")}>
-            Back to Dashboard
+          <Button onClick={handleBack}>
+            Back
           </Button>
         </div>
       </div>
@@ -33,30 +48,39 @@ export default function SolutionDetail() {
 
   return (
     <div className="min-h-screen">
-      <NavHeader />
+      <NavHeader>
+        <HelpMenu />
+      </NavHeader>
 
       <div className="max-w-6xl mx-auto px-6 lg:px-8 py-8">
         <Button
           variant="ghost"
-          onClick={() => setLocation("/dashboard")}
+          onClick={handleBack}
           className="mb-6"
           data-testid="button-back"
         >
           <ArrowLeft className="mr-2 h-4 w-4" />
-          Back to Dashboard
+          Back
         </Button>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2 space-y-8">
             <div>
               <div className="flex items-center gap-6 mb-6">
-                <div className="flex items-center justify-center h-24 md:h-32 w-24 md:w-32 flex-shrink-0">
-                  <img
-                    src={logoSrc}
-                    alt={`${solution.name} logo`}
-                    className="max-h-full max-w-full object-contain"
-                    data-testid="img-solution-logo"
-                  />
+                <div className="flex items-center justify-center h-24 md:h-32 w-24 md:w-32 flex-shrink-0 rounded bg-primary/10">
+                  {!logoError ? (
+                    <img
+                      src={logoSrc}
+                      alt={`${solution.name} logo`}
+                      className="max-h-full max-w-full object-contain p-2"
+                      data-testid="img-solution-logo"
+                      onError={() => setLogoError(true)}
+                    />
+                  ) : (
+                    <div className="text-4xl font-bold text-primary">
+                      {solution.name.charAt(0)}
+                    </div>
+                  )}
                 </div>
                 <div>
                   <h1 className="font-display text-3xl md:text-4xl font-bold mb-2" data-testid="text-solution-name">
