@@ -46,9 +46,9 @@ export default function Landing() {
   return (
     <div className="h-screen flex flex-col bg-background">
       <header className="border-b">
-        <div className="max-w-7xl mx-auto px-8 py-6">
-          <div className="flex items-center gap-4">
-            <img src={logoUrl} alt="Catalyst Logo" className="h-16" />
+        <div className="max-w-7xl mx-auto px-8 py-8">
+          <div className="flex justify-center">
+            <img src={logoUrl} alt="Catalyst Logo" className="h-32" />
           </div>
         </div>
       </header>
