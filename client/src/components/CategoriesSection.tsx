@@ -1,27 +1,33 @@
 import { Card } from "@/components/ui/card";
-import { Wrench, Shield, Cpu, Leaf, TrendingUp } from "lucide-react";
-import { CATEGORIES } from "@shared/solutions";
+import { Wrench, Shield, Cpu, Leaf, TrendingUp, Layout, Calendar, Calculator } from "lucide-react";
+import { CATEGORIES, type Category } from "@shared/solutions";
 
 interface CategoriesSectionProps {
   onCategoryClick?: (category: string) => void;
 }
 
 export default function CategoriesSection({ onCategoryClick }: CategoriesSectionProps) {
-  const categoryIcons = {
+  const categoryIcons: Record<Category, any> = {
     Robotics: Wrench,
     Safety: Shield,
     AI: Cpu,
     Sustainability: Leaf,
     Productivity: TrendingUp,
+    Layout: Layout,
+    Scheduling: Calendar,
+    Estimating: Calculator,
   };
 
   //todo: remove mock functionality
-  const categoryCounts = {
+  const categoryCounts: Record<Category, number> = {
     Robotics: 124,
     Safety: 89,
     AI: 156,
     Sustainability: 67,
     Productivity: 143,
+    Layout: 45,
+    Scheduling: 67,
+    Estimating: 34,
   };
 
   return (

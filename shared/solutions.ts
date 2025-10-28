@@ -5,6 +5,8 @@ export interface Solution {
   description: string;
   logo: string;
   categories: string[];
+  region: string[];
+  verticals: string[];
   location: string;
   founded: string;
   teamSize: string;
@@ -20,6 +22,29 @@ export const CATEGORIES = [
   "AI",
   "Sustainability",
   "Productivity",
+  "Estimating",
+  "Scheduling",
+  "Layout",
+] as const;
+
+export const REGIONS = [
+  "North America",
+  "Europe",
+  "Asia Pacific",
+  "Latin America",
+  "Middle East & Africa",
+] as const;
+
+export const VERTICALS = [
+  "Commercial",
+  "Datacenter",
+  "Airport",
+  "Hospital",
+  "Residential",
+  "Industrial",
+  "Infrastructure",
 ] as const;
 
 export type Category = typeof CATEGORIES[number];
+export type Region = typeof REGIONS[number];
+export type Vertical = typeof VERTICALS[number];
