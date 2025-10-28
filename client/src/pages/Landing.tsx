@@ -45,10 +45,15 @@ export default function Landing() {
 
   return (
     <div className="h-screen flex flex-col bg-background">
-      <header className="border-b">
-        <div className="max-w-7xl mx-auto px-8 py-8">
-          <div className="flex justify-center">
-            <img src={logoUrl} alt="Catalyst Logo" className="h-32" />
+      <header className="border-b relative overflow-hidden">
+        <div 
+          className="absolute inset-0 opacity-5 bg-center bg-no-repeat"
+          style={{ backgroundImage: `url(${logoUrl})`, backgroundSize: '300px' }}
+        />
+        <div className="relative max-w-7xl mx-auto px-8 py-12">
+          <div className="text-center">
+            <h1 className="font-display text-3xl font-bold text-foreground">Catalyst</h1>
+            <p className="text-sm text-muted-foreground mt-1">Building smarter starts here</p>
           </div>
         </div>
       </header>
