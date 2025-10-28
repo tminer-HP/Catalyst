@@ -38,8 +38,19 @@ export function useSearchHistory() {
       setHistory(getStoredHistory());
     };
 
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === HISTORY_KEY) {
+        setHistory(getStoredHistory());
+      }
+    };
+
     window.addEventListener(HISTORY_UPDATE_EVENT, handleUpdate);
-    return () => window.removeEventListener(HISTORY_UPDATE_EVENT, handleUpdate);
+    window.addEventListener('storage', handleStorageChange);
+    
+    return () => {
+      window.removeEventListener(HISTORY_UPDATE_EVENT, handleUpdate);
+      window.removeEventListener('storage', handleStorageChange);
+    };
   }, []);
 
   const addToHistory = (item: Omit<HistoryItem, 'id' | 'timestamp'>) => {
