@@ -4,6 +4,7 @@ import { Building2, FolderKanban, Lightbulb, Sparkles, ArrowRight } from "lucide
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { SidebarTrigger } from "@/components/ui/sidebar";
+import HelpMenu from "@/components/HelpMenu";
 
 export default function Landing() {
   const [, setLocation] = useLocation();
@@ -46,7 +47,10 @@ export default function Landing() {
   return (
     <div className="flex flex-col h-screen bg-background">
       <header className="border-b p-4">
-        <SidebarTrigger data-testid="button-sidebar-toggle" />
+        <div className="flex items-center justify-between">
+          <SidebarTrigger data-testid="button-sidebar-toggle" />
+          <HelpMenu />
+        </div>
       </header>
 
       <main className="flex-1 overflow-y-auto">

@@ -8,6 +8,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { ArrowLeft, Share2, Printer, Download, Star, Phone, Mail } from "lucide-react";
 import { useLocation } from "wouter";
+import HelpMenu from "@/components/HelpMenu";
 
 export default function Checkout() {
   const [, setLocation] = useLocation();
@@ -110,6 +111,7 @@ export default function Checkout() {
                 <Download className="w-4 h-4 mr-2" />
                 Export
               </Button>
+              <HelpMenu />
             </div>
           </div>
         </div>

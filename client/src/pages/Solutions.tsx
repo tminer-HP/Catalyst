@@ -11,6 +11,7 @@ import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import HelpMenu from "@/components/HelpMenu";
 import { CATEGORIES, REGIONS, VERTICALS, CSI_DIVISIONS, type Solution } from "@shared/solutions";
 import { mockSolutions, mockProjects } from "@shared/mockData";
 import { aiSearchSolutions } from "@/utils/aiSearch";
@@ -266,6 +267,7 @@ export default function Solutions() {
                   </Badge>
                 )}
               </Button>
+              <HelpMenu />
             </div>
           </div>
         </div>
