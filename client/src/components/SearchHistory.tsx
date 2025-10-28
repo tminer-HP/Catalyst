@@ -1,5 +1,5 @@
 import { useLocation } from "wouter";
-import { Clock, Trash2, Building2, FolderKanban, Lightbulb, Sparkles } from "lucide-react";
+import { Clock, Trash2, Building2, FolderKanban, Lightbulb, Sparkles, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Sidebar,
@@ -8,6 +8,9 @@ import {
   SidebarGroupLabel,
   SidebarGroupContent,
   SidebarHeader,
+  SidebarMenu,
+  SidebarMenuItem,
+  SidebarMenuButton,
 } from "@/components/ui/sidebar";
 import { useSearchHistory, type HistoryItem } from "@/hooks/useSearchHistory";
 import logoUrl from "@assets/image_1761678131803.png";
@@ -44,18 +47,23 @@ export default function SearchHistory() {
   };
 
   return (
-    <Sidebar>
-      <SidebarHeader className="p-6 border-b">
-        <div className="flex justify-center mb-4">
-          <img src={logoUrl} alt="Catalyst Logo" className="h-20" />
+    <Sidebar collapsible="icon">
+      <SidebarHeader className="p-4 border-b">
+        <div className="flex justify-center mb-3 group-data-[collapsible=icon]:mb-0">
+          <img 
+            src={logoUrl} 
+            alt="Catalyst Logo" 
+            className="h-16 group-data-[collapsible=icon]:h-8 transition-all" 
+          />
         </div>
         <Button
           variant="outline"
-          className="w-full"
+          className="w-full group-data-[collapsible=icon]:w-8 group-data-[collapsible=icon]:h-8 group-data-[collapsible=icon]:p-0"
           onClick={() => setLocation("/")}
-          data-testid="button-new-search"
+          data-testid="button-sidebar-new-search"
         >
-          + New Search
+          <Plus className="w-4 h-4 group-data-[collapsible=icon]:w-5 group-data-[collapsible=icon]:h-5" />
+          <span className="group-data-[collapsible=icon]:hidden">New Search</span>
         </Button>
       </SidebarHeader>
 
@@ -64,12 +72,12 @@ export default function SearchHistory() {
           <div className="flex items-center justify-between px-2 mb-3">
             <SidebarGroupLabel className="flex items-center gap-2">
               <Clock className="w-4 h-4" />
-              <span>History</span>
+              <span className="group-data-[collapsible=icon]:hidden">History</span>
             </SidebarGroupLabel>
             {history.length > 0 && (
               <button
                 onClick={clearHistory}
-                className="text-xs text-muted-foreground hover:text-foreground transition-colors"
+                className="text-xs text-muted-foreground hover:text-foreground transition-colors group-data-[collapsible=icon]:hidden"
                 data-testid="button-clear-history"
               >
                 <Trash2 className="w-3 h-3" />
@@ -79,24 +87,23 @@ export default function SearchHistory() {
 
           <SidebarGroupContent>
             {history.length === 0 ? (
-              <div className="text-center py-8 text-sm text-muted-foreground px-2">
-                No search history yet
+              <div className="text-center py-8 text-sm text-muted-foreground px-2 group-data-[collapsible=icon]:py-4">
+                <span className="group-data-[collapsible=icon]:hidden">No search history yet</span>
               </div>
             ) : (
-              <div className="space-y-1 px-2">
+              <SidebarMenu>
                 {history.map((item) => {
                   const Icon = typeIcons[item.type];
                   return (
-                    <button
-                      key={item.id}
-                      onClick={() => setLocation(item.path)}
-                      className="w-full text-left p-3 rounded-md hover-elevate active-elevate-2 transition-all group"
-                      data-testid={`history-item-${item.id}`}
-                    >
-                      <div className="flex items-start gap-2 mb-1">
-                        <Icon className="w-4 h-4 text-muted-foreground flex-shrink-0 mt-0.5" />
-                        <div className="flex-1 min-w-0">
-                          <p className="text-sm font-medium text-foreground line-clamp-2 group-hover:text-primary transition-colors">
+                    <SidebarMenuItem key={item.id}>
+                      <SidebarMenuButton
+                        onClick={() => setLocation(item.path)}
+                        data-testid={`history-item-${item.id}`}
+                        className="w-full"
+                      >
+                        <Icon className="w-4 h-4 flex-shrink-0" />
+                        <div className="flex-1 min-w-0 group-data-[collapsible=icon]:hidden">
+                          <p className="text-sm font-medium line-clamp-2">
                             {item.title}
                           </p>
                           <div className="flex items-center gap-2 mt-1">
@@ -111,11 +118,11 @@ export default function SearchHistory() {
                             </span>
                           </div>
                         </div>
-                      </div>
-                    </button>
+                      </SidebarMenuButton>
+                    </SidebarMenuItem>
                   );
                 })}
-              </div>
+              </SidebarMenu>
             )}
           </SidebarGroupContent>
         </SidebarGroup>
