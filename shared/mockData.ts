@@ -1,5 +1,86 @@
 import type { Solution } from "./solutions";
 
+export interface Project {
+  id: string;
+  name: string;
+  code: string;
+  vertical: string;
+  location: string;
+  value: string;
+  status: "Planning" | "In Progress" | "Completed";
+  solutionIds: string[];
+  description: string;
+}
+
+export const mockProjects: Project[] = [
+  {
+    id: "dc-alpha-2024",
+    name: "Alpha Datacenter Expansion",
+    code: "DC-ALPHA-2024",
+    vertical: "Datacenter",
+    location: "Ashburn, VA",
+    value: "$125M",
+    status: "In Progress",
+    solutionIds: ["dusty-robotics", "siteprint", "esticom", "procore", "spot-ai"],
+    description: "150,000 sq ft datacenter expansion with advanced MEP systems and redundant power infrastructure"
+  },
+  {
+    id: "hosp-mercy-wing",
+    name: "Mercy Hospital New Wing",
+    code: "HOSP-MERCY-2024",
+    vertical: "Hospital",
+    location: "Boston, MA",
+    value: "$85M",
+    status: "In Progress",
+    solutionIds: ["canvas-robotics", "dusty-robotics", "procore", "buildertrend", "plangrid"],
+    description: "State-of-the-art 5-story hospital wing with 120 patient rooms and specialized surgical facilities"
+  },
+  {
+    id: "airport-term-b",
+    name: "International Airport Terminal B Renovation",
+    code: "APT-INTL-TB",
+    vertical: "Airport",
+    location: "Denver, CO",
+    value: "$220M",
+    status: "Planning",
+    solutionIds: ["dusty-robotics", "spot-ai", "procore", "esticom"],
+    description: "Complete renovation of Terminal B including modernized concourses, retail spaces, and security systems"
+  },
+  {
+    id: "comm-tower-plaza",
+    name: "Tower Plaza Office Complex",
+    code: "COMM-TP-2024",
+    vertical: "Commercial",
+    location: "Austin, TX",
+    value: "$95M",
+    status: "In Progress",
+    solutionIds: ["canvas-robotics", "cyphra", "procore", "buildertrend"],
+    description: "Mixed-use development with Class A office space, retail, and underground parking"
+  },
+  {
+    id: "dc-phoenix-cloud",
+    name: "Phoenix Cloud Datacenter",
+    code: "DC-PHX-C01",
+    vertical: "Datacenter",
+    location: "Phoenix, AZ",
+    value: "$180M",
+    status: "In Progress",
+    solutionIds: ["rugged-robotics", "siteprint", "spot-ai", "esticom", "procore"],
+    description: "Hyperscale datacenter facility with 250,000 sq ft of raised floor space and liquid cooling systems"
+  },
+  {
+    id: "ind-mfg-plant",
+    name: "Advanced Manufacturing Facility",
+    code: "IND-MFG-01",
+    vertical: "Industrial",
+    location: "Detroit, MI",
+    value: "$150M",
+    status: "Planning",
+    solutionIds: ["dusty-robotics", "spot-ai", "procore"],
+    description: "350,000 sq ft manufacturing facility with automated assembly lines and clean room spaces"
+  }
+];
+
 export const mockSolutions: Solution[] = [
   {
     id: "canvas-robotics",
