@@ -186,32 +186,22 @@ export default function Solutions() {
       relevanceScore: solution.baseScore,
     }));
 
-    const groupsMap = new Map<string, SolutionWithScore[]>();
-
-    solutionsWithScores.forEach(solution => {
-      if (!groupsMap.has(solution.primaryDivision)) {
-        groupsMap.set(solution.primaryDivision, []);
-      }
-      groupsMap.get(solution.primaryDivision)!.push(solution);
-
-      if (solution.secondaryDivisions) {
-        solution.secondaryDivisions.forEach(divId => {
-          if (!groupsMap.has(divId)) {
-            groupsMap.set(divId, []);
-          }
-          groupsMap.get(divId)!.push(solution);
-        });
-      }
-    });
-
     const groups: CSIDivisionGroup[] = CSI_DIVISIONS
       .map(division => {
-        const solutions = groupsMap.get(division.id) || [];
-        const sortedSolutions = solutions.sort((a, b) => b.relevanceScore - a.relevanceScore);
+        const primarySolutions = solutionsWithScores
+          .filter(s => s.primaryDivision === division.id)
+          .sort((a, b) => b.relevanceScore - a.relevanceScore);
+        
+        const secondarySolutions = solutionsWithScores
+          .filter(s => s.primaryDivision !== division.id && s.secondaryDivisions?.includes(division.id))
+          .sort((a, b) => b.relevanceScore - a.relevanceScore);
+        
+        const allSolutions = [...primarySolutions, ...secondarySolutions];
+        
         return {
           divisionId: division.id,
           divisionLabel: `Division ${division.code} - ${division.label}`,
-          solutions: sortedSolutions,
+          solutions: allSolutions,
         };
       })
       .filter(group => group.solutions.length > 0);
@@ -414,6 +404,7 @@ export default function Solutions() {
                       <button
                         onClick={() => toggleDivision(group.divisionId)}
                         className="flex items-center justify-between w-full text-left hover-elevate active-elevate-2 rounded-md p-2 -m-2"
+                        aria-expanded={!isCollapsed}
                         data-testid={`button-toggle-division-${group.divisionId}`}
                       >
                         <div className="flex items-center gap-3">
