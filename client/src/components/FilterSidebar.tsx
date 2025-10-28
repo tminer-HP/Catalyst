@@ -1,10 +1,8 @@
-import { useState } from "react";
 import { Search, X } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { CATEGORIES, REGIONS, VERTICALS, type Category, type Region, type Vertical } from "@shared/solutions";
+import { CATEGORIES, REGIONS, VERTICALS } from "@shared/solutions";
 
 interface FilterSidebarProps {
   searchQuery: string;
@@ -73,7 +71,7 @@ export default function FilterSidebar({
         )}
       </div>
 
-      <ScrollArea className="flex-1">
+      <div className="flex-1 overflow-y-auto">
         <div className="p-6 space-y-6">
           <div>
             <h3 className="font-semibold mb-3 text-sm uppercase tracking-wide text-muted-foreground">
@@ -174,7 +172,7 @@ export default function FilterSidebar({
             </div>
           </div>
         </div>
-      </ScrollArea>
+      </div>
     </div>
   );
 }
